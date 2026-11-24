@@ -141,7 +141,6 @@ To be tried and adjusted in play.
 
 ## Still open
 
-- The wizard's true name.
 - Other worlds and when they unlock.
 - Sound and motion.
 - Accounts, privacy, running cost.

@@ -108,6 +108,7 @@ Mythic lanterns break a rule:
 | Hurricane Lamp | Lightning strikes wherever you tap |
 | Broken Cage | Two flames |
 | Copper Kettle | Leaves a burning trail wherever you walked |
+| Wick's Lantern | The final reward, earned by releasing Wick. Casts a beam of shadow instead of light |
 | Others | To be designed |
 
 ### Flames (effect)

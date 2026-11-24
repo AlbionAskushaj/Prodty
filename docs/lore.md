@@ -84,13 +84,19 @@ Draft of who keeps which zone:
 
 You beat Wick and release him, and he finally finds peace. The app does not end there.
 
+- The ember becomes a Great Flame, which is the Lighthouse rank.
+- Wick's Lantern becomes the final Mythic: the only lantern that casts a beam of shadow.
+- The Dark stays open with harder depths, as a place to explore and no longer a threat.
+
 ## The wizard's name
 
+His true name is **Taper**: the thin candle used to light other candles, which passes its flame on and gets shorter doing it. He named Wick as the one he meant to pass his flame to.
+
+- He has two names. The world knows his war title (draft: "the General of the Thousand Lanterns"), and Wick sneers it at him. Taper is the humble name only Wick ever used.
 - You name him in the first five minutes and he takes the name warmly.
 - He hints it is not his: a half-second pause before he answers to it, a scratched-out inscription on old gear, a keeper who starts to address him and is cut off.
-- His true name is revealed after Wick is defeated.
-- Afterward you choose which name to use, and he admits he prefers the one you gave him.
-- The true name itself is not chosen yet.
+- The reveal comes after Wick is defeated. As he is released, Wick's last word is "Taper", said with love for the first time since the siege. The wizard answers "Wick", a name he has never said aloud until then.
+- Afterward he offers you the name, and admits he prefers the one you gave him.
 
 ## How it is told
 
