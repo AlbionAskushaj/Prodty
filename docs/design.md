@@ -139,8 +139,34 @@ To be tried and adjusted in play.
 - He picks the smallest thing and asks if you can do it now. First bloom, first embers and a guaranteed first parcel follow.
 - Bounties, the vault, the Dark and bosses are each introduced the first time they become relevant.
 
+## Worlds
+
+Each affinity has a world, and each world is the home of one of the six surviving members of the wizard's old company.
+
+| Affinity | World | Who lives there |
+|---|---|---|
+| Study | The Reading Room, a library grown into a grove | The Archivist |
+| Discovery | Observatory Hill, under a drawn night sky | The Stargazer |
+| Making | The Signal Works, a cyberpunk world of cable roots, neon ink and terminals for leaves | The Tinker |
+| Hearth | The Cottage Garden | The Hearthkeeper |
+| Body | The High Trail, a mountain path | The Trailwalker |
+| Kin | Post Square, a town square with a post office | The Courier |
+
+- Every tree starts in the plain forest. As it grows, its surroundings transform into its world.
+- The hermit moves in once the world appears, and their gear starts dropping.
+- Hermits are characters you can talk to, each with their own voice and their own piece of the wizard's past.
+- All worlds keep the same flat ink style, each with its own accent colour.
+
+## Sound and motion
+
+- New things draw themselves: an ink line first, then colour.
+- Paper sounds: rustle, pen scratch, a rip when a shade dies, a wax seal cracking on a parcel.
+- His voice is letter-by-letter blips, pitched by mood and gear set. These are made in code, not recorded.
+- Music is sparse and mostly quiet: a few plucked strings and a low flute.
+- Screen changes are page turns.
+- Vibration: a soft tap on a bloom, a firmer one on a kill.
+- Music and sound effects come from Higgsfield, the same source as the art. Licence terms need checking before any public release.
+
 ## Still open
 
-- Other worlds and when they unlock.
-- Sound and motion.
 - Accounts, privacy, running cost.
