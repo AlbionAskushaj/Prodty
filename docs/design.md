@@ -1,6 +1,8 @@
 # Prodty design
 
-Decisions settled in brainstorming. Loot is in `loot-pools.md` and the optional game in `the-dark.md`.
+Decisions settled in brainstorming. Loot is in `loot-pools.md`, the optional game in `the-dark.md` and the story in `lore.md`.
+
+Prodty is the name of the app and of the world the wizard lives in.
 
 ## What it is
 
@@ -110,11 +112,36 @@ A task that keeps being dodged becomes a bounty whose reward grows.
 - A missed small deadline costs only the better loot.
 - A missed big deadline makes his flame gutter and closes the Dark until you settle it: done late, a new date, or let go.
 
+## Repeating things
+
+You tell him once. He does not read your calendar.
+
+| Shape | Examples | How it works |
+|---|---|---|
+| Bells | Classes, weekly meetings | Fixed time. A bell on the tree rings beforehand. Reminders only: they are not tasks and pay nothing. |
+| Fruit | Gym three times a week | A branch grows that many fruit each week. Pick one whenever you go. Unpicked fruit drops with no penalty. |
+| Regrowth | Laundry, haircut | The leaf grows back a set number of days after it was last done. |
+
+- He learns when you tend to do flexible things and nudges around then.
+- No streaks: a running total, plus a small bonus for hitting the week's count.
+- After a long gap, the first one back pays double.
+- If you keep doing fewer than the target, he asks whether to lower it.
+- Bells shape "What now?": he will not offer a long task just before one.
+
+## The first five minutes
+
+To be tried and adjusted in play.
+
+- No sign-up wall. You open into a small clearing with one sapling and a dim lantern on the ground.
+- You tap the lantern and he wakes.
+- You name him, and three questions set his tone.
+- He asks what is on your mind, you type anything, and your first leaves appear.
+- He picks the smallest thing and asks if you can do it now. First bloom, first embers and a guaranteed first parcel follow.
+- Bounties, the vault, the Dark and bosses are each introduced the first time they become relevant.
+
 ## Still open
 
-- Habits and recurring tasks.
-- The first five minutes.
+- The wizard's true name.
 - Other worlds and when they unlock.
 - Sound and motion.
 - Accounts, privacy, running cost.
-- Names for the app and the wizard.
