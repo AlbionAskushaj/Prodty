@@ -158,14 +158,15 @@ Each stage ends with something usable on a phone browser.
 - **Numbers:** every drop chance, ladder and cap is a guess until played.
 - **Before any public release:** check the licence on generated art and audio, and give the Watcher's eye and the general's backstory their own twist.
 
-## Drafts not yet confirmed
+## Details confirmed before stage 1
 
-These were filled in during the brainstorm and have not been explicitly approved.
-
-- The war title "the General of the Thousand Lanterns".
-- The flame effect and staff cast for each set, and the four lanterns added beyond the nine shown.
-- The keeper for each zone, which lost comrade keeps which, and the empty armour in the Eyeless Deep.
-- The hermits each holding a different view of Taper.
-- What counts as "after dark" for the Night Moth set.
-- The three questions that set his tone.
-- The Trailwalker image needs redoing: it kept the default lantern.
+| Detail | Decision |
+|---|---|
+| Taper's war title | The Dawnbringer |
+| Flame effects, staff casts, all thirteen lanterns | Kept as drafted, to be tuned in play |
+| Keepers | Lost comrades who have become creatures; relighting turns them back |
+| The Eyeless Deep | Guarded by Taper's empty armour |
+| The hermits | They disagree about Taper |
+| "After dark" | Real sunset where you are; needs rough location |
+| His tone | No set-up questions; he starts neutral and adapts |
+| Trailwalker image | Redone at stage 3 with the gear pieces |

@@ -33,7 +33,7 @@ You never maintain it.
 - Character modelled on a warm mentor: easygoing on top and sharp underneath, offers and never orders, gentle corny humour, enjoys tea and rest, forgives instantly, has a past he rarely mentions.
 - All lines are original. At most one wise saying a day.
 - Typed text only, shown letter by letter with old-game blips.
-- Three questions at the start set his tone, and he drifts with how you talk to him. Full gear sets layer their own voice on top.
+- He starts neutral and his tone adapts to how you talk to him. There are no set-up questions. Full gear sets layer their own voice on top.
 - He speaks when you open the app, to explain what changed and to teach one new thing at a time.
 
 ### What he does
@@ -134,7 +134,7 @@ To be tried and adjusted in play.
 
 - No sign-up wall. You open into a small clearing with one sapling and a dim lantern on the ground.
 - You tap the lantern and he wakes.
-- You name him, and three questions set his tone.
+- You name him.
 - He asks what is on your mind, you type anything, and your first leaves appear.
 - He picks the smallest thing and asks if you can do it now. First bloom, first embers and a guaranteed first parcel follow.
 - Bounties, the vault, the Dark and bosses are each introduced the first time they become relevant.
@@ -154,7 +154,7 @@ Each affinity has a world, and each world is the home of one of the six survivin
 
 - Every tree starts in the plain forest. As it grows, its surroundings transform into its world.
 - The hermit moves in once the world appears, and their gear starts dropping.
-- Hermits are characters you can talk to, each with their own voice and their own piece of the wizard's past.
+- Hermits are characters you can talk to, each with their own voice and their own piece of the wizard's past. They disagree about him: some forgave him and some never did.
 - All worlds keep the same flat ink style, each with its own accent colour.
 
 ## Sound and motion

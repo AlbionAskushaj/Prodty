@@ -152,14 +152,19 @@ Mythic lanterns break a rule:
 
 ## Zones
 
-| Zone | Twist | Builds that shine | Keeper (draft) |
+Each keeper is a lost member of Taper's company who has become a creature. Relighting one turns them back. See `lore.md`.
+
+| Zone | Twist | Builds that shine | Keeper |
 |---|---|---|---|
-| The Thicket | None; the starting zone | Anything | The Stag: charges in straight lines; its weak point shows only in wide light |
-| Fogmarsh | Fog halves the wide pattern | Deepwater, Stargazer | The Ferryman: hides among false lights |
-| Gale Ridge | Wind shrinks open flames while you walk | Stormglass, Trailwalker | The Kite: circles overhead and dives, gusts push you |
-| Frost Hollow | Cold drains oil faster | Hearthkeeper, The Harvestman | The Long Night: the room cools until you light its braziers |
-| The Stacks | A buried library; open flame burns the loot | Archivist, Night Moth | The Censor: covers parts of the screen in black bars |
-| The Eyeless Deep | Brighter light draws more shades | Night Moth to sneak, The Watcher to terrify | The Eyeless: hunts by brightness; go dim to lose it, then strike |
+| The Thicket | None; the starting zone | Anything | The Stag (was the Harvestman): charges in straight lines; its weak point shows only in wide light |
+| Fogmarsh | Fog halves the wide pattern | Deepwater, Stargazer | The Ferryman (was Deepwater): hides among false lights |
+| Gale Ridge | Wind shrinks open flames while you walk | Stormglass, Trailwalker | The Kite (was Stormglass): circles overhead and dives, gusts push you |
+| Frost Hollow | Cold drains oil faster | Hearthkeeper, The Harvestman | The Long Night (was Night Moth): the room cools until you light its braziers |
+| The Stacks | A buried library; open flame burns the loot | Archivist, Night Moth | The Censor (was the Wisp): covers parts of the screen in black bars |
+| The Eyeless Deep | Brighter light draws more shades | Night Moth to sneak, The Watcher to terrify | The Empty Armour (Taper's old regalia): hunts by brightness; go dim to lose it, then strike |
+| The Bridge | To be designed | To be designed | Him |
+
+The flame effects, staff casts and all thirteen lanterns above are accepted as the starting point, to be tuned in play.
 
 ## Rewards
 

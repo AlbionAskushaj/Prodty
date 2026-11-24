@@ -377,5 +377,5 @@ Not part of any set. Drops from any task. A starting list to grow from.
 ## Open questions
 
 - Ladder numbers and drop chances are guesses and need tuning against real use.
-- Night Moth rewards working late. Decide whether "after dark" should follow the clock or a time you set.
+- "After dark" for the Night Moth set means after real sunset where you are. This needs your rough location and shifts with the seasons, so winter gives more Night Moth hours than summer.
 - The Wisp rewards letting go. The two-week rule is there to stop tasks being added and dropped for loot.

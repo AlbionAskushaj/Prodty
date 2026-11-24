@@ -60,17 +60,19 @@ The twelve sets were the general's company.
 - Five are lost in the Dark as keepers: the Harvestman, Stormglass, Deepwater, Night Moth and the Wisp.
 - The Watcher set is the general's own war regalia. Wearing all of it brings his old voice back. Wick models himself on it: he became the man his master used to be.
 
-Draft of who keeps which zone:
+Each lost comrade has become a creature in the Dark. You recognise them by scraps of their old gear, and relighting one turns them back.
 
-| Zone | Keeper |
-|---|---|
-| The Thicket | The Harvestman |
-| Fogmarsh | Deepwater |
-| Gale Ridge | Stormglass |
-| Frost Hollow | Night Moth |
-| The Stacks | The Wisp |
-| The Eyeless Deep | The general's old armour, empty and still walking |
-| The Bridge | Him |
+| Zone | Keeper | Who it was |
+|---|---|---|
+| The Thicket | The Stag | The Harvestman |
+| Fogmarsh | The Ferryman | Deepwater |
+| Gale Ridge | The Kite | Stormglass |
+| Frost Hollow | The Long Night | Night Moth |
+| The Stacks | The Censor | The Wisp |
+| The Eyeless Deep | The Empty Armour | Taper's own war regalia, still walking with nobody inside |
+| The Bridge | Him | Wick |
+
+The six hermits who survived do not agree about Taper. Some forgave him and some never did, and each remembers the last siege differently. The truth is pieced together from all six.
 
 ## How it shows up in play
 
@@ -92,7 +94,7 @@ You beat Wick and release him, and he finally finds peace. The app does not end 
 
 His true name is **Taper**: the thin candle used to light other candles, which passes its flame on and gets shorter doing it. He named Wick as the one he meant to pass his flame to.
 
-- He has two names. The world knows his war title (draft: "the General of the Thousand Lanterns"), and Wick sneers it at him. Taper is the humble name only Wick ever used.
+- He has two names. The world knows his war title, the Dawnbringer, and Wick sneers it at him. Taper is the humble name only Wick ever used.
 - You name him in the first five minutes and he takes the name warmly.
 - He hints it is not his: a half-second pause before he answers to it, a scratched-out inscription on old gear, a keeper who starts to address him and is cut off.
 - The reveal comes after Wick is defeated. As he is released, Wick's last word is "Taper", said with love for the first time since the siege. The wizard answers "Wick", a name he has never said aloud until then.
