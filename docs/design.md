@@ -167,6 +167,14 @@ Each affinity has a world, and each world is the home of one of the six survivin
 - Vibration: a soft tap on a bloom, a firmer one on a kill.
 - Music and sound effects come from Higgsfield, the same source as the art. Licence terms need checking before any public release.
 
+## The practical side
+
+- **No account at first.** The forest is saved on the phone and backed up to a small private server. A proper sign-in comes when the app is wrapped for the stores.
+- **Privacy:** everything typed to the wizard is sent to an AI provider to be read. Use one that does not train on that data. Notes have a "keep this private" switch, after which he sees only the title.
+- **Running cost:** the AI is called only when you type or when he checks in. Tapping leaves, opening parcels and the whole of the Dark cost nothing to run. Put a real number on it once the model is chosen.
+- **Offline:** the forest, finishing tasks and the Dark work without signal. Talking to him waits until you are back online.
+- **Notifications** need the phone-app wrapper, so check-ins arrive with that step and not in the first browser version.
+
 ## Still open
 
-- Accounts, privacy, running cost.
+Nothing on the brainstorm list. Next is the build order.
