@@ -40,6 +40,15 @@ For screens:
 
 Ending a prompt with "All text spelled exactly as given, crisp and legible, and no other text anywhere" kept the lettering clean.
 
+## Cut-out pieces
+
+Tested and working. Adding `background: "transparent"` and `output_format: "png"` to a request, and opening the prompt with "isolated on a fully transparent background with nothing behind it: no paper, no ground, no shadow, no text", returns a clean cut-out.
+
+- The first four pieces are in `assets/art/stage1/`: `taper-idle.png`, `tree-bare.png`, `leaves-sheet.png`, `forest-floor.png`.
+- Layered together on cream paper they match the look of the mockups.
+- The solid areas come back at 253 or 254 out of 255 opacity, not fully solid. Snap anything above 240 to fully solid when loading.
+- A sheet of several small items on one image works; slice it into separate sprites in code.
+
 ## Music
 
 | Thing | Value |
