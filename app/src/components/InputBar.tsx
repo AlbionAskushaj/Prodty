@@ -11,7 +11,7 @@ interface InputBarProps {
 export function InputBar({ placeholder, disabled, onSend }: InputBarProps) {
   const [text, setText] = useState('')
   const field = useRef<HTMLTextAreaElement>(null)
-  const canPaste = typeof navigator.clipboard?.readText === 'function'
+  const [canPaste, setCanPaste] = useState(() => typeof navigator.clipboard?.readText === 'function')
 
   function resize() {
     const el = field.current
@@ -37,7 +37,8 @@ export function InputBar({ placeholder, disabled, onSend }: InputBarProps) {
         field.current?.focus()
       }
     } catch {
-      // Permission was refused; the person can still paste with the keyboard.
+      // Reading the clipboard is refused here, so stop offering it. Pasting with the keyboard still works.
+      setCanPaste(false)
     }
   }
 

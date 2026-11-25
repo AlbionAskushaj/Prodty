@@ -30,7 +30,8 @@ function greeting(state: AppState): string {
     : `Welcome back. ${open} leaves are waiting, and none of them are in a hurry.`
 }
 
-if (new URLSearchParams(location.search).has('reset')) {
+// Opening the app with ?reset or #reset starts over from the unlit lantern.
+if (new URLSearchParams(location.search).has('reset') || location.hash === '#reset') {
   resetAll()
   history.replaceState(null, '', location.pathname)
 }

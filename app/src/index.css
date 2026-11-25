@@ -58,7 +58,9 @@ textarea:focus-visible {
   height: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: 0 16px calc(12px + env(safe-area-inset-bottom));
+  padding-block: 0 12px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 
 /* ---- top bar ---- */
@@ -67,7 +69,7 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: calc(10px + env(safe-area-inset-top));
+  padding-top: 10px;
   min-height: 52px;
 }
 
