@@ -1,4 +1,4 @@
-import type { AppState, Pending } from '../state/types'
+import type { AppState, NewTask, Pending } from '../state/types'
 import { daysQuiet } from '../state/store'
 import { characterBible } from './bible'
 import type { Action, Brain, BrainReply } from './types'
@@ -80,7 +80,7 @@ function describe(state: AppState, ids: Map<string, string>): string {
 }
 
 /** Check everything the model proposed against the real forest before any of it is applied. */
-function toReply(raw: ModelReply, state: AppState, ids: Map<string, string>): BrainReply {
+function toReply(raw: ModelReply, state: AppState, ids: Map<string, string>, said: string): BrainReply {
   const speech = typeof raw.speech === 'string' && raw.speech.trim() ? raw.speech.trim().slice(0, 400) : 'Mm. Say that once more for me.'
   const existing = state.trees.map((t) => t.name)
   const known = (name: string) => existing.some((n) => sameName(n, name))
@@ -88,15 +88,20 @@ function toReply(raw: ModelReply, state: AppState, ids: Map<string, string>): Br
   const plant = strings(raw.plant).map(cleanName)
   const askPlant = strings(raw.ask_plant).map(cleanName).filter((n) => !known(n) && !plant.some((p) => sameName(p, n)))
   const adds = (Array.isArray(raw.add) ? raw.add : [])
-    .map((item) => item as { title?: unknown; tree?: unknown })
+    .map((item) => item as { title?: unknown; tree?: unknown; note?: unknown; due?: unknown })
     .filter((item) => typeof item.title === 'string' && item.title.trim())
-    .map((item) => ({
-      title: (item.title as string).trim().slice(0, 80),
-      treeName: typeof item.tree === 'string' && item.tree.trim() ? cleanName(item.tree) : (existing[0] ?? 'Personal'),
-    }))
+    .map(
+      (item): NewTask => ({
+        title: (item.title as string).trim().slice(0, 80),
+        treeName: typeof item.tree === 'string' && item.tree.trim() ? cleanName(item.tree) : (existing[0] ?? 'Personal'),
+        ...(typeof item.note === 'string' && item.note.trim() ? { note: item.note.trim().slice(0, 600) } : {}),
+        ...(typeof item.due === 'string' && item.due.trim() ? { due: item.due.trim().slice(0, 40) } : {}),
+        said,
+      }),
+    )
 
   const actions: Action[] = plant.filter((n) => !known(n)).map((name) => ({ type: 'plant_tree', name }))
-  const held: { title: string; treeName: string }[] = []
+  const held: NewTask[] = []
   for (const add of adds) {
     if (askPlant.some((n) => sameName(n, add.treeName))) held.push(add)
     else if (known(add.treeName) || plant.some((p) => sameName(p, add.treeName))) actions.push({ type: 'add_task', ...add })
@@ -126,7 +131,7 @@ function toReply(raw: ModelReply, state: AppState, ids: Map<string, string>): Br
     pending = { kind: 'drop', taskId: askDrop }
     choices = ['Let it go', 'Keep it']
   }
-  return { speech, actions, pending, choices }
+  return { speech, actions, pending, choices, via: 'claude' }
 }
 
 export function createHostedBrain(fallback: Brain): Brain {
@@ -136,7 +141,7 @@ export function createHostedBrain(fallback: Brain): Brain {
       if (state.pending && QUICK_ANSWER.test(text.trim())) return fallback.interpret(text, state)
 
       const sample = unavailable ? null : await getSample()
-      if (!sample) return fallback.interpret(text, state)
+      if (!sample) return { ...(await fallback.interpret(text, state)), fault: unavailable ? 'not allowed' : 'not reachable here' }
 
       const ids = new Map<string, string>()
       const message = `Forest now:\n${describe(state, ids)}\n\nThe person says:\n${text}`
@@ -147,7 +152,7 @@ export function createHostedBrain(fallback: Brain): Brain {
       ]
       try {
         const raw = await sample.json<ModelReply>(turns, { model: MODEL, effort: 'low', cache: false })
-        const reply = toReply(raw ?? {}, state, ids)
+        const reply = toReply(raw ?? {}, state, ids, text.slice(0, 600))
         history.push({ role: 'user', content: `The person says:\n${text}` }, { role: 'assistant', content: JSON.stringify({ speech: reply.speech }) })
         return reply
       } catch (error) {
@@ -156,7 +161,7 @@ export function createHostedBrain(fallback: Brain): Brain {
         if (code && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(code)) {
           unavailable = true
         }
-        return fallback.interpret(text, state)
+        return { ...(await fallback.interpret(text, state)), fault: code ?? 'error' }
       }
     },
   }

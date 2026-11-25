@@ -126,14 +126,14 @@ function interpretSync(text: string, state: AppState): BrainReply {
       if (yes) {
         const actions: Action[] = [
           ...newTrees.map((name): Action => ({ type: 'plant_tree', name })),
-          ...items.map((i): Action => ({ type: 'add_task', title: i.title, treeName: i.treeName })),
+          ...items.map((i): Action => ({ type: 'add_task', ...i })),
         ]
         return { speech: 'Planted. Everything is on its branch now. Tap a tree to see it up close.', actions, pending: null }
       }
       const home = treeNames[0] ?? 'Everything'
       const actions: Action[] = [
         ...(treeNames.length === 0 ? [{ type: 'plant_tree', name: home } as Action] : []),
-        ...items.map((i): Action => ({ type: 'add_task', title: i.title, treeName: home })),
+        ...items.map((i): Action => ({ type: 'add_task', ...i, treeName: home })),
       ]
       return { speech: 'Then I will keep them together for now. We can sort them later, or never.', actions, pending: null }
     }
@@ -204,7 +204,7 @@ function interpretSync(text: string, state: AppState): BrainReply {
     return { speech: 'I did not catch a task in that. Tell me what needs doing and I will find it a branch.', actions: [] }
   }
 
-  const items = titles.map((title) => ({ title, treeName: chooseTree(title, treeNames) }))
+  const items = titles.map((title) => ({ title, treeName: chooseTree(title, treeNames), said: input.slice(0, 600) }))
   const newTrees = [...new Set(items.map((i) => i.treeName))].filter(
     (name) => !treeNames.some((n) => n.toLowerCase() === name.toLowerCase()),
   )
@@ -224,7 +224,7 @@ function interpretSync(text: string, state: AppState): BrainReply {
       items.length === 1
         ? `One thing. It is on the ${items[0].treeName} tree.`
         : `${countPhrase(items.length)} I have hung each one on the right tree.`,
-    actions: items.map((i): Action => ({ type: 'add_task', title: i.title, treeName: i.treeName })),
+    actions: items.map((i): Action => ({ type: 'add_task', ...i })),
   }
 }
 
@@ -232,6 +232,6 @@ export const standInBrain: Brain = {
   async interpret(text, state) {
     // A short pause so replies do not feel instant and mechanical.
     await new Promise((resolve) => setTimeout(resolve, 350))
-    return interpretSync(text, state)
+    return { ...interpretSync(text, state), via: 'stand-in' }
   },
 }

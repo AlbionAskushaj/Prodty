@@ -69,6 +69,7 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
                       onClick={() => setSelected(selected === task.id ? null : task.id)}
                     >
                       {task.title}
+                      {task.due && <span className="tag-due">{task.due}</span>}
                     </button>
                   )}
                 </TreeItem>
@@ -99,6 +100,14 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
       {chosen && (
         <div className="sheet" role="dialog" aria-label={chosen.title}>
           <p className="sheet-title">{chosen.title}</p>
+          {chosen.due && <p className="sheet-due">By {chosen.due}</p>}
+          {chosen.note && <p className="sheet-note">{chosen.note}</p>}
+          {chosen.said && chosen.said !== chosen.title && (
+            <details className="sheet-said">
+              <summary>What you said</summary>
+              <p>{chosen.said}</p>
+            </details>
+          )}
           <div className="sheet-actions">
             <button
               type="button"

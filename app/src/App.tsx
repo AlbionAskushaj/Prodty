@@ -77,6 +77,8 @@ export default function App() {
   const [thinking, setThinking] = useState(false)
   const [typing, setTyping] = useState(false)
   const [fed, setFed] = useState(0)
+  // Set when the stand-in had to answer instead of Claude, with the reason, so it is never a silent downgrade.
+  const [fault, setFault] = useState<string | null>(null)
   const [light, setLight] = useState<LightBox | null>(null)
   const [scenery, setScenery] = useState<{ x: number; y: number; width: number } | null>(null)
   const stateRef = useRef(state)
@@ -167,6 +169,9 @@ export default function App() {
     logEvent('message', { length: text.length })
     try {
       const reply = await brain.interpret(text, current)
+      logEvent('reply', { via: reply.via ?? 'unknown', fault: reply.fault ?? null, actions: reply.actions.length })
+      if (reply.via === 'claude') setFault(null)
+      else if (reply.fault) setFault(reply.fault)
       const applied = applyActions(stateRef.current, reply.actions)
       setState({ ...applied.state, pending: reply.pending === undefined ? applied.state.pending : reply.pending })
       // New things land in the camp, so step back out of a tree to show them arriving.
@@ -258,6 +263,8 @@ export default function App() {
         )}
       </div>
 
+      {!asleep && !tree && <div className="scrim" aria-hidden="true" />}
+
       {asleep ? (
         <p className="hint wake-hint">Something lies in the dark grass. Tap it.</p>
       ) : (
@@ -271,6 +278,7 @@ export default function App() {
             onChoice={send}
             onTyping={setTyping}
           />
+          {fault && <p className="fault">He is answering by simple rules just now, not by thinking ({fault}).</p>}
           <InputBar
             placeholder={state.phase === 'naming' ? 'Give him a name…' : `Tell ${state.wizardName ?? 'the wizard'}…`}
             disabled={thinking}

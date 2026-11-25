@@ -3,7 +3,7 @@ import type { AppState, Pending } from '../state/types'
 /** A change to the forest. The brain proposes these; the app's own code applies them. */
 export type Action =
   | { type: 'plant_tree'; name: string }
-  | { type: 'add_task'; title: string; treeName: string }
+  | { type: 'add_task'; title: string; treeName: string; note?: string; due?: string; said?: string }
   | { type: 'complete_task'; taskId: string }
   | { type: 'drop_task'; taskId: string }
 
@@ -15,6 +15,10 @@ export interface BrainReply {
   pending?: Pending | null
   /** Quick answers to offer as buttons. */
   choices?: string[]
+  /** Which mind answered. Shown and logged, so a silent fall back to the stand-in is never invisible. */
+  via?: 'claude' | 'stand-in'
+  /** Why the stand-in answered, when it did. */
+  fault?: string
 }
 
 /**

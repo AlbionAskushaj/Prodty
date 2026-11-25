@@ -97,9 +97,18 @@ export function applyActions(state: AppState, actions: Action[]): Applied {
     } else if (action.type === 'add_task') {
       const tree = findTree(trees, action.treeName) ?? trees[0]
       if (!tree) continue
-      const task: Task = { id: newId(), treeId: tree.id, title: action.title, createdAt: now, status: 'open' }
+      const task: Task = {
+        id: newId(),
+        treeId: tree.id,
+        title: action.title,
+        createdAt: now,
+        status: 'open',
+        ...(action.note ? { note: action.note } : {}),
+        ...(action.due ? { due: action.due } : {}),
+        ...(action.said ? { said: action.said } : {}),
+      }
       tasks = [...tasks, task]
-      logEvent('task_added', { taskId: task.id, treeId: tree.id, tree: tree.name, title: task.title })
+      logEvent('task_added', { taskId: task.id, treeId: tree.id, tree: tree.name, title: task.title, hasNote: !!task.note, due: task.due ?? null })
     } else {
       const task = tasks.find((t) => t.id === action.taskId)
       if (!task || task.status !== 'open') continue

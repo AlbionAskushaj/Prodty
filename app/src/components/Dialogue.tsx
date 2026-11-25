@@ -14,7 +14,10 @@ interface DialogueProps {
 
 const MS_PER_LETTER = 26
 
-/** Taper's speech box: letters appear one at a time with a blip, as in an old game. Tap to finish at once. */
+/**
+ * What the wizard says, shown as subtitles over the scene: his name, then his words arriving one
+ * letter at a time with a blip, as in an old game. Tap to finish the line at once.
+ */
 export function Dialogue({ name, text, turn, thinking, choices, onChoice, onTyping }: DialogueProps) {
   const [shown, setShown] = useState(0)
   const skip = useRef(false)
@@ -46,30 +49,20 @@ export function Dialogue({ name, text, turn, thinking, choices, onChoice, onTypi
 
   return (
     <div className="dialogue-wrap">
-      <div className="dialogue-box">
-        {name && <span className="nameplate">{name}</span>}
-        {/* Four nested cut-corner layers draw the thick outer line and the thin inner one. */}
-        <div className="cut cut-1">
-          <div className="cut cut-2">
-            <div className="cut cut-3">
-              <div
-                className="cut cut-4 dialogue"
-                onClick={() => {
-                  skip.current = true
-                }}
-                role="status"
-                aria-live="polite"
-              >
-                <p>
-                  {thinking ? <span className="thinking">. . .</span> : text.slice(0, shown)}
-                  {/* The unseen remainder keeps the box from changing height as letters arrive. */}
-                  {!thinking && <span className="unseen">{text.slice(shown)}</span>}
-                </p>
-                {finished && !thinking && <span className="more" aria-hidden="true" />}
-              </div>
-            </div>
-          </div>
-        </div>
+      <div
+        className="dialogue"
+        onClick={() => {
+          skip.current = true
+        }}
+        role="status"
+        aria-live="polite"
+      >
+        {name && <span className="speaker">{name}</span>}
+        <p>
+          {thinking ? <span className="thinking">. . .</span> : text.slice(0, shown)}
+          {/* The unseen remainder keeps the lines from jumping as letters arrive. */}
+          {!thinking && <span className="unseen">{text.slice(shown)}</span>}
+        </p>
       </div>
       {finished && !thinking && choices && choices.length > 0 && (
         <div className="choices">

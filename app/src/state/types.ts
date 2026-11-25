@@ -14,11 +14,26 @@ export interface Task {
   createdAt: string
   status: 'open' | 'done' | 'dropped'
   closedAt?: string
+  /** Everything else that was said about it: specifics, names, amounts, why it matters. */
+  note?: string
+  /** When it is needed by, in the person's own words ("Friday", "March 14"). */
+  due?: string
+  /** The message it came from, word for word, so nothing typed is ever lost. */
+  said?: string
+}
+
+/** A task as first described, before it has a tree to hang on. */
+export interface NewTask {
+  title: string
+  treeName: string
+  note?: string
+  due?: string
+  said?: string
 }
 
 /** Something Taper has asked and is waiting on a yes or no for. */
 export type Pending =
-  | { kind: 'plant'; newTrees: string[]; items: { title: string; treeName: string }[] }
+  | { kind: 'plant'; newTrees: string[]; items: NewTask[] }
   | { kind: 'drop'; taskId: string }
 
 export type Phase = 'asleep' | 'naming' | 'ready'
