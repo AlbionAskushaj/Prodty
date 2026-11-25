@@ -13,8 +13,10 @@ const SLOTS: Record<number, [number, number, number][]> = {
   6: [[150, 870, 365], [310, 800, 380], [470, 755, 390], [630, 760, 390], [780, 810, 380], [900, 890, 355]],
 }
 
-const FLOOR = art['forest-floor']
-const FLOOR_TOP = 520
+/** A flat patch of shade on the grass, so things stand on the ground and do not float over it. */
+function Shade({ x, y, width }: { x: number; y: number; width: number }) {
+  return <div className="shade" style={sceneBox(x - width / 2, y - width * 0.11, width, 4.5)} />
+}
 
 function isNew(iso: string): boolean {
   return Date.now() - Date.parse(iso) < 2500
@@ -45,9 +47,13 @@ export function Forest({ state, speaking, onOpenTree, onWake }: ForestProps) {
 
   return (
     <div className="scene">
-      <img className="sprite piece" style={sceneBox(0, FLOOR_TOP, 1000, FLOOR.w / FLOOR.h)} src="art/forest-floor.webp" alt="" draggable={false} />
-
+      {trees.length === 0 && <Shade x={350} y={805} width={300} />}
       {trees.length === 0 && <TreeSprite footX={350} footY={805} width={400} />}
+
+      {placed.map(({ tree, footX, footY, width }) => (
+        <Shade key={tree.id} x={footX} y={footY} width={width * 0.78} />
+      ))}
+      {!asleep && <Shade x={alone ? 745 : 610} y={alone ? 1030 : 1100} width={210} />}
 
       {placed.map(({ tree, footX, footY, width, tasks, open }) => (
         <TreeSprite

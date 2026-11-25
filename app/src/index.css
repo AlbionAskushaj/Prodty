@@ -89,11 +89,36 @@ textarea:focus-visible {
   overflow: clip;
 }
 
+/* The forest clearing fills the whole frame; trees and the wizard stand on its grass. */
+.backdrop {
+  position: absolute;
+  inset: 7px 8px;
+  overflow: hidden;
+  animation: enter 0.5s ease-out both;
+}
+
+.backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  user-select: none;
+  pointer-events: none;
+}
+
+.shade {
+  position: absolute;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
 /* A hairline border round the page with a gold diamond top and bottom, like a printed plate. */
 .frame {
   position: absolute;
+  z-index: 4;
   inset: 7px 8px;
-  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border: 1.5px solid var(--ink);
   pointer-events: none;
 }
 
@@ -178,10 +203,11 @@ textarea:focus-visible {
 
 /* The scene keeps its shape and takes the largest size that fits the space it is given. */
 .scene-fit {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: grid;
-  place-items: center;
+  place-items: end center;
   container-type: size;
 }
 
@@ -550,8 +576,17 @@ button.tree:active {
 }
 
 .wake-hint {
-  min-height: 120px;
-  animation: enter 1.2s ease-out both;
+  position: relative;
+  z-index: 10;
+  align-self: center;
+  margin: 0 0 56px;
+  padding: 8px 18px 10px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--ink);
+  animation: lift 1s ease-out both;
 }
 
 /* ---- Taper's speech ---- */

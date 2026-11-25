@@ -7,13 +7,13 @@
     "w": 551,
     "h": 900
   },
-  "forest-floor": {
-    "w": 1147,
-    "h": 746
-  },
   "lantern-unlit": {
     "w": 515,
     "h": 600
+  },
+  "clearing": {
+    "w": 752,
+    "h": 1344
   },
   "tree-bare": {
     "w": 753,

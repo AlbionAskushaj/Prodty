@@ -106,6 +106,11 @@ export default function App() {
 
   return (
     <main className="app" onPointerDown={startMusic}>
+      {!tree && (
+        <div className="backdrop" aria-hidden="true">
+          <img src="art/clearing.webp" alt="" draggable={false} />
+        </div>
+      )}
       <div className="frame" aria-hidden="true" />
 
       <div className="hud">

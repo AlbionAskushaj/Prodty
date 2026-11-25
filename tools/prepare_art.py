@@ -109,11 +109,13 @@ def main() -> None:
     for source, name, max_side in [
         ("taper-idle.png", "taper-idle", 900),
         ("taper-talking.png", "taper-talking", 900),
-        ("forest-floor.png", "forest-floor", 1200),
         ("lantern-unlit.png", "lantern-unlit", 600),
     ]:
         if os.path.exists(os.path.join(SRC, source)):
             data[name] = save(crop_to_content(load_clean(source)), name, max_side)
+
+    # The clearing fills the whole screen, so it keeps its empty sky and is not cropped.
+    data["clearing"] = save(load_clean("clearing-b.png"), "clearing", 1500)
 
     tree = crop_to_content(load_clean("tree-bare.png"))
     data["tree-bare"] = {**save(tree, "tree-bare", 1000), **tree_points(tree)}
