@@ -221,3 +221,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# The Python template above ignores every lib/ folder; the app keeps real code in one.
+!app/src/lib/
