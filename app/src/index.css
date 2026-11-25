@@ -1,20 +1,41 @@
-@import '@fontsource/eb-garamond/latin-400.css';
-@import '@fontsource/eb-garamond/latin-500.css';
-@import '@fontsource/eb-garamond/latin-600.css';
-@import '@fontsource/eb-garamond/latin-400-italic.css';
+/* Only the Latin files, as woff2, so they are small enough to travel inside the stylesheet. */
+@font-face {
+  font-family: 'EB Garamond';
+  font-weight: 400;
+  font-display: swap;
+  src: url('@fontsource/eb-garamond/files/eb-garamond-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-weight: 500;
+  font-display: swap;
+  src: url('@fontsource/eb-garamond/files/eb-garamond-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-weight: 600;
+  font-display: swap;
+  src: url('@fontsource/eb-garamond/files/eb-garamond-latin-600-normal.woff2') format('woff2');
+}
 
+/* One deliberate look: ink on cream paper. The page does not change with the viewer's theme. */
 :root {
   --paper: #faecd0;
-  --paper-deep: #f3e2bd;
+  --paper-deep: #f1dfb8;
   --ink: #2b2422;
   --ink-soft: #6b5d55;
   --rust: #c8532c;
   --moss: #6f7d3c;
-  --gold: #e9b949;
+  --gold: #e3b548;
   --serif: 'EB Garamond', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
-  color: var(--ink);
-  font-family: var(--serif);
-  font-size: 18px;
+  color-scheme: light;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -30,9 +51,13 @@ body,
 }
 
 body {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.3;
   background-color: var(--paper);
   /* Fine paper grain. */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .2 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
   overscroll-behavior: none;
 }
 
@@ -56,30 +81,80 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 480px;
+  max-width: 500px;
   margin: 0 auto;
-  padding-block: 0 12px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 8px 20px;
+  padding-left: max(22px, env(safe-area-inset-left, 0px));
+  padding-right: max(22px, env(safe-area-inset-right, 0px));
+  overflow: clip;
+}
+
+/* A hairline border round the page with a gold diamond top and bottom, like a printed plate. */
+.frame {
+  position: absolute;
+  inset: 7px 8px;
+  border: 1px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  pointer-events: none;
+}
+
+.frame::before,
+.frame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: var(--gold);
+  border: 1px solid var(--ink);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.frame::before {
+  top: 0;
+}
+
+.frame::after {
+  top: 100%;
 }
 
 /* ---- top bar ---- */
 
 .hud {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
-  min-height: 52px;
+  padding-top: 8px;
+  min-height: 54px;
 }
 
 .embers {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 1.35rem;
+  padding-bottom: 3px;
+  font-size: 1.5rem;
   font-weight: 500;
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: lining-nums tabular-nums;
+  border-bottom: 1.5px solid var(--gold);
+}
+
+.ember-count {
+  display: inline-block;
+  animation: bump 0.45s cubic-bezier(0.2, 1.8, 0.4, 1);
+}
+
+.wordmark {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 .icon-button {
@@ -98,21 +173,29 @@ textarea:focus-visible {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  animation: enter 0.32s ease-out both;
+}
+
+/* The scene keeps its shape and takes the largest size that fits the space it is given. */
+.scene-fit {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
 }
 
 .scene {
   position: relative;
-  width: 100%;
-  max-height: 100%;
+  width: min(100cqw, 100cqh * 1000 / 1180);
   aspect-ratio: 1000 / 1180;
-  margin: 0 auto;
+  container-type: inline-size;
 }
 
 .sprite {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
@@ -124,16 +207,20 @@ textarea:focus-visible {
   display: block;
 }
 
-.piece.sprite {
-  height: auto;
+.tree {
+  transform-origin: 46% 96%;
 }
 
-.tree {
-  transform-origin: 50% 96%;
+.tree.sprout {
+  animation: sprout 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) both;
 }
 
 button.tree {
   transition: transform 0.18s ease;
+}
+
+button.tree:hover {
+  transform: scale(1.02);
 }
 
 button.tree:active {
@@ -146,17 +233,18 @@ button.tree:active {
   transform: translate(-50%, -50%);
 }
 
-.tree-item .sprite {
-  height: auto;
+.tree-item.tagged {
+  z-index: 2;
 }
 
 .leaf {
-  animation: sway 5.5s ease-in-out infinite alternate;
+  animation: sway 6s ease-in-out infinite alternate;
+  transform-origin: 50% 85%;
 }
 
-.tree-item:nth-child(odd) .leaf {
-  animation-duration: 7s;
-  animation-delay: -2s;
+.leaf.fresh,
+.blossom.fresh {
+  animation: bloom 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 
 .leaf-teal {
@@ -171,90 +259,80 @@ button.tree:active {
   filter: hue-rotate(-105deg) saturate(0.7);
 }
 
-.blossom.fresh {
-  animation: bloom 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+/* Paper tags: a ring at the top as if hung from a thread. */
+.tree-tag,
+.leaf-tag {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 var(--ink);
+  line-height: 1.15;
+  text-align: center;
+}
+
+.tree-tag::before,
+.leaf-tag::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--gold);
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  transform: translate(-50%, -60%);
 }
 
 .tree-tag {
   position: absolute;
   z-index: 1500;
   transform: translate(-50%, -50%);
-  padding: 1px 9px 2px;
-  font-size: 0.82rem;
-  line-height: 1.25;
-  white-space: nowrap;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 3px;
-  box-shadow: 1.5px 1.5px 0 var(--ink);
-}
-
-.lantern {
-  animation: nudge 2.6s ease-in-out infinite;
-}
-
-.taper {
-  animation: breathe 4s ease-in-out infinite;
-  transform-origin: 50% 100%;
-  transition: width 0.2s ease;
-}
-
-/* ---- one tree up close ---- */
-
-.tree-view {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  height: 100%;
-  justify-content: center;
-}
-
-.tree-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--ink);
-}
-
-.tree-header .icon-button {
-  position: absolute;
-  left: -8px;
-}
-
-.tree-header h1 {
-  margin: 0;
-  font-size: 2.1rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.3em 0.75em 0.32em;
+  font-size: clamp(13px, 4cqw, 20px);
   font-weight: 500;
-  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.tree-tag .count {
+  font-size: 0.8em;
+  color: var(--rust);
+  font-variant-numeric: lining-nums;
 }
 
 .leaf-tag {
   position: absolute;
   left: 50%;
-  top: 78%;
+  top: 82%;
   transform: translateX(-50%);
   z-index: 3;
-  max-width: 132px;
   width: max-content;
-  padding: 3px 8px 4px;
-  font-size: 0.8rem;
-  line-height: 1.15;
-  text-align: center;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 3px;
-  box-shadow: 1.5px 1.5px 0 var(--ink);
+  max-width: 34cqw;
+  padding: 0.35em 0.6em 0.38em;
+  font-size: clamp(12px, 3.5cqw, 17px);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: visible;
 }
 
 .edge-left .leaf-tag {
-  transform: translateX(-22%);
+  transform: translateX(-24%);
+}
+
+.edge-left .leaf-tag::before {
+  left: 24%;
 }
 
 .edge-right .leaf-tag {
-  transform: translateX(-78%);
+  transform: translateX(-76%);
+}
+
+.edge-right .leaf-tag::before {
+  left: 76%;
 }
 
 .leaf-tag.selected {
@@ -263,12 +341,118 @@ button.tree:active {
   z-index: 4;
 }
 
+.lantern {
+  animation: nudge 2.6s ease-in-out infinite;
+}
+
+.taper {
+  transform-origin: 50% 100%;
+  animation: arrive 0.6s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+  transition:
+    width 0.18s ease,
+    left 0.18s ease;
+  pointer-events: none;
+}
+
+.taper .sprite {
+  transform-origin: 50% 100%;
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+.drift {
+  position: absolute;
+  z-index: 1400;
+  width: 6%;
+  opacity: 0;
+  pointer-events: none;
+  animation: drift 13s linear infinite;
+}
+
+.drift-0 {
+  left: 12%;
+  top: 14%;
+}
+
+.drift-1 {
+  left: 48%;
+  top: 8%;
+  width: 5%;
+  animation-duration: 17s;
+  animation-delay: -6s;
+}
+
+.drift-2 {
+  left: 70%;
+  top: 20%;
+  width: 4.5%;
+  animation-duration: 15s;
+  animation-delay: -11s;
+}
+
+/* ---- one tree up close ---- */
+
+.tree-view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-header {
+  position: relative;
+  margin-top: -50px;
+  padding: 0 64px;
+  text-align: center;
+}
+
+/* The back arrow sits under the ember count, clear of the title. */
+.tree-header .icon-button {
+  position: absolute;
+  left: -10px;
+  top: 46px;
+  z-index: 6;
+}
+
+.tree-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px auto 0;
+  max-width: 260px;
+}
+
+.rule::before,
+.rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+}
+
+.rule i {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border: 1px solid var(--ink);
+  transform: rotate(45deg);
+}
+
 .overflow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px 8px;
   align-items: center;
-  padding: 4px 0;
+  padding: 6px 0 2px;
 }
 
 .overflow p {
@@ -276,12 +460,16 @@ button.tree:active {
   margin: 0;
   font-style: italic;
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .overflow .leaf-tag {
-  position: static;
+  position: relative;
+  left: auto;
+  top: auto;
   transform: none;
+  max-width: 100%;
+  font-size: 0.9rem;
 }
 
 .ember-rise {
@@ -291,6 +479,7 @@ button.tree:active {
   display: inline-flex;
   align-items: center;
   gap: 2px;
+  font-size: clamp(15px, 4.4cqw, 22px);
   font-weight: 600;
   white-space: nowrap;
   animation: rise 2.2s ease-out both;
@@ -303,19 +492,21 @@ button.tree:active {
   right: 0;
   bottom: 0;
   z-index: 3000;
-  padding: 14px 14px 16px;
+  padding: 16px 14px 16px;
   background: var(--paper);
   border: 1.5px solid var(--ink);
   border-radius: 6px;
   box-shadow: 3px 3px 0 var(--ink);
-  animation: lift 0.18s ease-out both;
+  animation: lift 0.2s ease-out both;
 }
 
 .sheet-title {
   margin: 0 0 12px;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 500;
+  line-height: 1.2;
   text-align: center;
+  text-wrap: balance;
 }
 
 .sheet-actions,
@@ -327,12 +518,13 @@ button.tree:active {
 }
 
 .pill {
-  min-height: 44px;
-  padding: 6px 20px 8px;
-  font-size: 1.05rem;
+  min-height: 46px;
+  padding: 6px 22px 8px;
+  font-size: 1.1rem;
   border: 1.5px solid var(--ink);
   border-radius: 999px;
   background: var(--paper);
+  transition: transform 0.1s ease;
 }
 
 .pill.solid {
@@ -346,46 +538,86 @@ button.tree:active {
 }
 
 .pill:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.98);
 }
 
 .hint {
   margin: 8px 0 20px;
   text-align: center;
   font-style: italic;
+  font-size: 1.1rem;
   color: var(--ink-soft);
 }
 
 .wake-hint {
-  min-height: 150px;
+  min-height: 120px;
+  animation: enter 1.2s ease-out both;
 }
 
 /* ---- Taper's speech ---- */
 
 .dialogue-wrap {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 14px;
+  animation: lift 0.3s ease-out both;
+}
+
+.dialogue-box {
+  position: relative;
+}
+
+.cut {
+  clip-path: polygon(
+    var(--c) 0,
+    calc(100% - var(--c)) 0,
+    100% var(--c),
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    var(--c) 100%,
+    0 calc(100% - var(--c)),
+    0 var(--c)
+  );
+}
+
+.cut-1 {
+  --c: 11px;
+  padding: 3px;
+  background: var(--ink);
+}
+
+.cut-2 {
+  --c: 9.5px;
+  padding: 4px;
+  background: var(--paper);
+}
+
+.cut-3 {
+  --c: 7px;
+  padding: 1px;
+  background: var(--ink);
+}
+
+.cut-4 {
+  --c: 6.5px;
+  background: var(--paper);
 }
 
 .dialogue {
   position: relative;
   padding: 16px 18px 18px;
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  border-radius: 4px;
-  outline: 1px solid var(--ink);
-  outline-offset: -8px;
   cursor: default;
 }
 
 .dialogue p {
   margin: 0;
   min-height: 2.6em;
-  font-size: 1.22rem;
+  font-size: 1.28rem;
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.28;
 }
 
 .dialogue .unseen {
@@ -394,22 +626,23 @@ button.tree:active {
 
 .nameplate {
   position: absolute;
-  top: -13px;
-  left: 16px;
-  padding: 0 8px;
+  z-index: 2;
+  top: -11px;
+  left: 20px;
+  padding: 1px 10px 0;
   font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
+  color: var(--paper);
+  background: var(--ink);
   border-radius: 2px;
 }
 
 .more {
   position: absolute;
-  right: 16px;
-  bottom: 12px;
+  right: 14px;
+  bottom: 10px;
   border: 6px solid transparent;
   border-top: 8px solid var(--ink);
   border-bottom: 0;
@@ -419,19 +652,22 @@ button.tree:active {
 .thinking {
   letter-spacing: 0.2em;
   color: var(--ink-soft);
+  animation: pulse 1.2s ease-in-out infinite;
 }
 
 /* ---- typing things in ---- */
 
 .input-bar {
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: flex-end;
   gap: 4px;
-  margin-top: 10px;
-  padding: 4px 6px;
+  margin-top: 12px;
+  padding: 5px 6px 5px 10px;
   border: 1.5px solid var(--ink);
-  border-radius: 26px;
-  background: var(--paper);
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--paper) 70%, #fff);
 }
 
 .input-bar textarea {
@@ -444,13 +680,14 @@ button.tree:active {
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   line-height: 1.25;
 }
 
 .input-bar textarea::placeholder {
   color: var(--ink-soft);
-  opacity: 0.85;
+  opacity: 0.8;
+  font-style: italic;
 }
 
 .input-bar .icon-button {
@@ -460,33 +697,54 @@ button.tree:active {
 .send {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 2px;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 1px;
   border-radius: 50%;
   background: var(--ink);
   color: var(--paper);
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
 }
 
 .send:disabled {
-  opacity: 0.3;
+  opacity: 0.28;
   cursor: default;
+}
+
+.send:not(:disabled):active {
+  transform: scale(0.92);
 }
 
 /* ---- motion ---- */
 
 @keyframes sway {
   from {
-    transform: rotate(-3deg);
+    transform: rotate(-4deg);
   }
   to {
-    transform: rotate(3deg);
+    transform: rotate(4deg);
   }
 }
 
 @keyframes breathe {
   50% {
-    transform: scaleY(1.012);
+    transform: scaleY(1.014);
+  }
+}
+
+@keyframes arrive {
+  from {
+    transform: translateY(8%) scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes sprout {
+  from {
+    transform: scale(0.05);
+    opacity: 0;
   }
 }
 
@@ -509,10 +767,6 @@ button.tree:active {
     transform: scale(0.2) rotate(-40deg);
     opacity: 0;
   }
-  to {
-    transform: scale(1) rotate(0);
-    opacity: 1;
-  }
 }
 
 @keyframes rise {
@@ -524,8 +778,32 @@ button.tree:active {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -64px);
+    transform: translate(-50%, -260%);
     opacity: 0;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(160%, 900%) rotate(300deg);
+    opacity: 0;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: scale(0.975);
   }
 }
 
@@ -536,9 +814,22 @@ button.tree:active {
   }
 }
 
+@keyframes bump {
+  from {
+    transform: scale(1.5);
+    color: var(--rust);
+  }
+}
+
 @keyframes bob {
   50% {
     transform: translateY(3px);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
   }
 }
 

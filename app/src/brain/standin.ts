@@ -50,12 +50,18 @@ function cleanTask(raw: string): string {
   return titleCase(text).slice(0, 80)
 }
 
+const INTENT = /\b(?:need to|have to|has to|gotta|got to|should|must|want to|wanna|ought to|remember to)\s+(.+?)(?=\s+(?:and\s+)?i\s+(?:also\s+)?(?:need|have|should|must|want|gotta|got|am|was|feel)\b|[.,;!?\n]|$)/gi
+
 export function splitTasks(text: string): string[] {
-  return text
+  const listed = text
     .split(/\n|;|,|\.\s+|\s+and then\s+|\s+then\s+/i)
     .flatMap((part) => part.split(/\s+and\s+(?=(?:i\s+)?(?:need|have|should|must|gotta|want)\b)/i))
-    .map(cleanTask)
-    .filter((t) => t.length >= 3)
+  // A single run-on sentence: pull out what follows each "have to", "need to" and so on.
+  if (listed.length === 1) {
+    const intents = [...text.matchAll(INTENT)].map((m) => cleanTask(m[1])).filter((t) => t.length >= 3 && !/^do$/i.test(t))
+    if (intents.length > 0) return intents
+  }
+  return listed.map(cleanTask).filter((t) => t.length >= 3)
 }
 
 /** Find the open task that best matches what the person typed, if any is close enough. */

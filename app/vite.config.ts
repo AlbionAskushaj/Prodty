@@ -5,4 +5,6 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: './',
   plugins: [react()],
+  // Fonts are small enough to sit inside the stylesheet, which keeps them working wherever the app is hosted.
+  build: { assetsInlineLimit: 60000 },
 })

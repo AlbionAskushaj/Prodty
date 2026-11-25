@@ -3,7 +3,7 @@ import art from '../data/art.json'
 import { FLAT_EMBERS } from '../state/store'
 import type { Task, Tree } from '../state/types'
 import { EmberIcon } from './Icons'
-import { ANCHORS, TASK_SLOTS, TreeItem, TreeSprite, standing } from './TreeSprite'
+import { ANCHORS, TASK_ANCHORS, TASK_SLOTS, TreeItem, TreeSprite, standing } from './TreeSprite'
 
 interface TreeViewProps {
   tree: Tree
@@ -14,8 +14,8 @@ interface TreeViewProps {
   onDrop: (taskId: string) => void
 }
 
-function isFresh(task: Task): boolean {
-  return task.status === 'done' && !!task.closedAt && Date.now() - Date.parse(task.closedAt) < 2500
+function isFresh(iso: string | undefined): boolean {
+  return !!iso && Date.now() - Date.parse(iso) < 2500
 }
 
 export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps) {
@@ -23,7 +23,6 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
   const onTree = tasks.slice(0, TASK_SLOTS)
   const overflow = tasks.slice(TASK_SLOTS).filter((t) => t.status === 'open')
   const chosen = tasks.find((t) => t.id === selected && t.status === 'open')
-  const open = tasks.filter((t) => t.status === 'open').length
 
   return (
     <div className="tree-view">
@@ -34,45 +33,56 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
           </svg>
         </button>
         <h1>{tree.name}</h1>
+        <div className="rule" aria-hidden="true">
+          <i />
+        </div>
       </header>
 
-      <div className="scene">
-        <TreeSprite footX={520} footY={1130} width={800}>
-          {ANCHORS.map((_, slot) => {
-            const task = onTree[slot]
-            if (!task) {
-              return slot < 6 + open * 2 ? <TreeItem key={slot} anchor={slot} size={0.13} kind="leaf" color={tree.color} /> : null
-            }
-            const done = task.status === 'done'
-            return (
-              <TreeItem key={task.id} anchor={slot} size={0.19} kind={done ? 'blossom' : 'leaf'} color={tree.color} fresh={isFresh(task)}>
-                {done ? (
-                  isFresh(task) && (
-                    <span className="ember-rise">
-                      <EmberIcon size={16} /> +{FLAT_EMBERS}
-                    </span>
-                  )
-                ) : (
-                  <button
-                    type="button"
-                    className={`leaf-tag ${selected === task.id ? 'selected' : ''}`}
-                    onClick={() => setSelected(selected === task.id ? null : task.id)}
-                  >
-                    {task.title}
-                  </button>
-                )}
-              </TreeItem>
-            )
-          })}
-        </TreeSprite>
-        <img className="sprite piece" style={{ ...standing(art['taper-idle'], 130, 1150, 125), zIndex: 2000 }} src="art/taper-idle.webp" alt="" draggable={false} />
+      <div className="scene-fit">
+        <div className="scene">
+          <TreeSprite footX={525} footY={1140} width={790}>
+            {ANCHORS.map((_, slot) => {
+              const task = onTree[TASK_ANCHORS.indexOf(slot)]
+              if (!task) return <TreeItem key={slot} anchor={slot} size={0.15} kind="leaf" color={tree.color} />
+              const done = task.status === 'done'
+              return (
+                <TreeItem
+                  key={task.id}
+                  anchor={slot}
+                  size={0.2}
+                  exact
+                  kind={done ? 'blossom' : 'leaf'}
+                  color={tree.color}
+                  fresh={done ? isFresh(task.closedAt) : isFresh(task.createdAt)}
+                >
+                  {done ? (
+                    isFresh(task.closedAt) && (
+                      <span className="ember-rise">
+                        <EmberIcon size={18} /> +{FLAT_EMBERS}
+                      </span>
+                    )
+                  ) : (
+                    <button
+                      type="button"
+                      className={`leaf-tag ${selected === task.id ? 'selected' : ''}`}
+                      onClick={() => setSelected(selected === task.id ? null : task.id)}
+                    >
+                      {task.title}
+                    </button>
+                  )}
+                </TreeItem>
+              )
+            })}
+          </TreeSprite>
+          <div className="piece taper" style={{ ...standing(art['taper-idle'], 140, 1168, 200), zIndex: 2000 }}>
+            <img className="sprite" src="art/taper-idle.webp" alt="" draggable={false} />
+          </div>
+        </div>
       </div>
 
       {overflow.length > 0 && (
         <div className="overflow">
-          <p>
-            {overflow.length} more on this tree
-          </p>
+          <p>{overflow.length} more on this tree</p>
           {overflow.map((task) => (
             <button key={task.id} type="button" className={`leaf-tag ${selected === task.id ? 'selected' : ''}`} onClick={() => setSelected(task.id)}>
               {task.title}

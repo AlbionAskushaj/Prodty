@@ -79,6 +79,8 @@ export default function App() {
       const applied = applyActions(stateRef.current, reply.actions)
       setState({ ...applied.state, pending: reply.pending === undefined ? applied.state.pending : reply.pending })
       if (applied.embersGained > 0) chime()
+      // New things land in the forest, so step back out of a tree to show them arriving.
+      if (reply.actions.some((a) => a.type === 'plant_tree' || a.type === 'add_task')) setOpenTree(null)
       say(reply.speech, reply.choices)
     } catch {
       say('Something slipped away from me just then. Tell me again, if you would.')
@@ -104,10 +106,16 @@ export default function App() {
 
   return (
     <main className="app" onPointerDown={startMusic}>
+      <div className="frame" aria-hidden="true" />
+
       <div className="hud">
         <span className="embers" aria-label={`${state.embers} embers`}>
-          <EmberIcon /> {state.embers}
+          <EmberIcon size={26} />
+          <span key={state.embers} className="ember-count">
+            {state.embers}
+          </span>
         </span>
+        {!tree && <span className="wordmark">Prodty</span>}
         <button
           type="button"
           className="icon-button"
@@ -118,7 +126,7 @@ export default function App() {
         </button>
       </div>
 
-      <div className="stage">
+      <div className="stage" key={tree ? tree.id : 'forest'}>
         {tree ? (
           <TreeView
             tree={tree}
@@ -128,7 +136,9 @@ export default function App() {
             onDrop={(id) => finishTask(id, false)}
           />
         ) : (
-          <Forest state={state} speaking={typing || thinking} onOpenTree={setOpenTree} onWake={wake} />
+          <div className="scene-fit">
+            <Forest state={state} speaking={typing || thinking} onOpenTree={setOpenTree} onWake={wake} />
+          </div>
         )}
       </div>
 

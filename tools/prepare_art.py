@@ -18,7 +18,7 @@ OUT = "app/public/art"
 DATA = "app/src/data/art.json"
 
 LEAF_NAMES = ["leaf-rust", "leaf-moss", "leaf-gold", "leaf-fallen", "blossom", "bud"]
-TREE_ANCHOR_COUNT = 18
+TREE_ANCHOR_COUNT = 44
 
 
 def load_clean(name: str) -> Image.Image:
@@ -82,8 +82,8 @@ def tree_points(im: Image.Image) -> dict:
     """Pick spread-out points on the branches for leaves, and the trunk's foot."""
     alpha = np.array(im.getchannel("A")) > 128
     h, w = alpha.shape
-    ys, xs = np.nonzero(alpha[: int(h * 0.60)])
-    pts = np.stack([xs, ys], axis=1).astype(float)[::7]
+    ys, xs = np.nonzero(alpha[: int(h * 0.56)])
+    pts = np.stack([xs, ys], axis=1).astype(float)[::5]
 
     trunk_row = alpha[int(h * 0.72)]
     trunk_x = float(np.median(np.nonzero(trunk_row)[0]))

@@ -46,16 +46,30 @@ export function Dialogue({ name, text, turn, thinking, choices, onChoice, onTypi
 
   return (
     <div className="dialogue-wrap">
-      <div className="dialogue" onClick={() => {
-          skip.current = true
-        }} role="status" aria-live="polite">
+      <div className="dialogue-box">
         {name && <span className="nameplate">{name}</span>}
-        <p>
-          {thinking ? <span className="thinking">. . .</span> : text.slice(0, shown)}
-          {/* The unseen remainder keeps the box from changing height as letters arrive. */}
-          {!thinking && <span className="unseen">{text.slice(shown)}</span>}
-        </p>
-        {finished && !thinking && <span className="more" aria-hidden="true" />}
+        {/* Four nested cut-corner layers draw the thick outer line and the thin inner one. */}
+        <div className="cut cut-1">
+          <div className="cut cut-2">
+            <div className="cut cut-3">
+              <div
+                className="cut cut-4 dialogue"
+                onClick={() => {
+                  skip.current = true
+                }}
+                role="status"
+                aria-live="polite"
+              >
+                <p>
+                  {thinking ? <span className="thinking">. . .</span> : text.slice(0, shown)}
+                  {/* The unseen remainder keeps the box from changing height as letters arrive. */}
+                  {!thinking && <span className="unseen">{text.slice(shown)}</span>}
+                </p>
+                {finished && !thinking && <span className="more" aria-hidden="true" />}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {finished && !thinking && choices && choices.length > 0 && (
         <div className="choices">
