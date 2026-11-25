@@ -1,0 +1,551 @@
+@import '@fontsource/eb-garamond/latin-400.css';
+@import '@fontsource/eb-garamond/latin-500.css';
+@import '@fontsource/eb-garamond/latin-600.css';
+@import '@fontsource/eb-garamond/latin-400-italic.css';
+
+:root {
+  --paper: #faecd0;
+  --paper-deep: #f3e2bd;
+  --ink: #2b2422;
+  --ink-soft: #6b5d55;
+  --rust: #c8532c;
+  --moss: #6f7d3c;
+  --gold: #e9b949;
+  --serif: 'EB Garamond', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--paper);
+  /* Fine paper grain. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  overscroll-behavior: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px calc(12px + env(safe-area-inset-bottom));
+}
+
+/* ---- top bar ---- */
+
+.hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  min-height: 52px;
+}
+
+.embers {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.35rem;
+  font-weight: 500;
+  font-variant-numeric: lining-nums;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--ink);
+}
+
+/* ---- scenes ---- */
+
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1000 / 1180;
+  margin: 0 auto;
+}
+
+.sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.piece,
+.tree {
+  position: absolute;
+  display: block;
+}
+
+.piece.sprite {
+  height: auto;
+}
+
+.tree {
+  transform-origin: 50% 96%;
+}
+
+button.tree {
+  transition: transform 0.18s ease;
+}
+
+button.tree:active {
+  transform: scale(0.97);
+}
+
+.tree-item {
+  position: absolute;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.tree-item .sprite {
+  height: auto;
+}
+
+.leaf {
+  animation: sway 5.5s ease-in-out infinite alternate;
+}
+
+.tree-item:nth-child(odd) .leaf {
+  animation-duration: 7s;
+  animation-delay: -2s;
+}
+
+.leaf-teal {
+  filter: hue-rotate(95deg) saturate(0.9);
+}
+
+.leaf-rose {
+  filter: hue-rotate(-38deg) saturate(0.85) brightness(1.08);
+}
+
+.leaf-violet {
+  filter: hue-rotate(-105deg) saturate(0.7);
+}
+
+.blossom.fresh {
+  animation: bloom 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+.tree-tag {
+  position: absolute;
+  z-index: 1500;
+  transform: translate(-50%, -50%);
+  padding: 1px 9px 2px;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 1.5px 1.5px 0 var(--ink);
+}
+
+.lantern {
+  animation: nudge 2.6s ease-in-out infinite;
+}
+
+.taper {
+  animation: breathe 4s ease-in-out infinite;
+  transform-origin: 50% 100%;
+  transition: width 0.2s ease;
+}
+
+/* ---- one tree up close ---- */
+
+.tree-view {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  justify-content: center;
+}
+
+.tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.tree-header .icon-button {
+  position: absolute;
+  left: -8px;
+}
+
+.tree-header h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.leaf-tag {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  transform: translateX(-50%);
+  z-index: 3;
+  max-width: 132px;
+  width: max-content;
+  padding: 3px 8px 4px;
+  font-size: 0.8rem;
+  line-height: 1.15;
+  text-align: center;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 1.5px 1.5px 0 var(--ink);
+}
+
+.edge-left .leaf-tag {
+  transform: translateX(-22%);
+}
+
+.edge-right .leaf-tag {
+  transform: translateX(-78%);
+}
+
+.leaf-tag.selected {
+  background: var(--ink);
+  color: var(--paper);
+  z-index: 4;
+}
+
+.overflow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.overflow p {
+  width: 100%;
+  margin: 0;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.overflow .leaf-tag {
+  position: static;
+  transform: none;
+}
+
+.ember-rise {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: rise 2.2s ease-out both;
+  pointer-events: none;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  padding: 14px 14px 16px;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 var(--ink);
+  animation: lift 0.18s ease-out both;
+}
+
+.sheet-title {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.sheet-actions,
+.choices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pill {
+  min-height: 44px;
+  padding: 6px 20px 8px;
+  font-size: 1.05rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+}
+
+.pill.solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pill.ghost {
+  border-color: transparent;
+  color: var(--ink-soft);
+}
+
+.pill:active {
+  transform: translateY(1px);
+}
+
+.hint {
+  margin: 8px 0 20px;
+  text-align: center;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.wake-hint {
+  min-height: 150px;
+}
+
+/* ---- Taper's speech ---- */
+
+.dialogue-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.dialogue {
+  position: relative;
+  padding: 16px 18px 18px;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 4px;
+  outline: 1px solid var(--ink);
+  outline-offset: -8px;
+  cursor: default;
+}
+
+.dialogue p {
+  margin: 0;
+  min-height: 2.6em;
+  font-size: 1.22rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.dialogue .unseen {
+  visibility: hidden;
+}
+
+.nameplate {
+  position: absolute;
+  top: -13px;
+  left: 16px;
+  padding: 0 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+}
+
+.more {
+  position: absolute;
+  right: 16px;
+  bottom: 12px;
+  border: 6px solid transparent;
+  border-top: 8px solid var(--ink);
+  border-bottom: 0;
+  animation: bob 1s ease-in-out infinite;
+}
+
+.thinking {
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+}
+
+/* ---- typing things in ---- */
+
+.input-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 4px 6px;
+  border: 1.5px solid var(--ink);
+  border-radius: 26px;
+  background: var(--paper);
+}
+
+.input-bar textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  padding: 9px 6px 10px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.input-bar textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
+
+.input-bar .icon-button {
+  color: var(--ink-soft);
+}
+
+.send {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.send:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ---- motion ---- */
+
+@keyframes sway {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes breathe {
+  50% {
+    transform: scaleY(1.012);
+  }
+}
+
+@keyframes nudge {
+  0%,
+  80%,
+  100% {
+    transform: rotate(0);
+  }
+  88% {
+    transform: rotate(-4deg);
+  }
+  94% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes bloom {
+  from {
+    transform: scale(0.2) rotate(-40deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -64px);
+    opacity: 0;
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,118 @@
+import { useState } from 'react'
+import art from '../data/art.json'
+import { FLAT_EMBERS } from '../state/store'
+import type { Task, Tree } from '../state/types'
+import { EmberIcon } from './Icons'
+import { ANCHORS, TASK_SLOTS, TreeItem, TreeSprite, standing } from './TreeSprite'
+
+interface TreeViewProps {
+  tree: Tree
+  /** Open tasks and those finished today, oldest first. */
+  tasks: Task[]
+  onBack: () => void
+  onDone: (taskId: string) => void
+  onDrop: (taskId: string) => void
+}
+
+function isFresh(task: Task): boolean {
+  return task.status === 'done' && !!task.closedAt && Date.now() - Date.parse(task.closedAt) < 2500
+}
+
+export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps) {
+  const [selected, setSelected] = useState<string | null>(null)
+  const onTree = tasks.slice(0, TASK_SLOTS)
+  const overflow = tasks.slice(TASK_SLOTS).filter((t) => t.status === 'open')
+  const chosen = tasks.find((t) => t.id === selected && t.status === 'open')
+  const open = tasks.filter((t) => t.status === 'open').length
+
+  return (
+    <div className="tree-view">
+      <header className="tree-header">
+        <button type="button" className="icon-button" onClick={onBack} aria-label="Back to the forest">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 12H5M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+        <h1>{tree.name}</h1>
+      </header>
+
+      <div className="scene">
+        <TreeSprite footX={520} footY={1130} width={800}>
+          {ANCHORS.map((_, slot) => {
+            const task = onTree[slot]
+            if (!task) {
+              return slot < 6 + open * 2 ? <TreeItem key={slot} anchor={slot} size={0.13} kind="leaf" color={tree.color} /> : null
+            }
+            const done = task.status === 'done'
+            return (
+              <TreeItem key={task.id} anchor={slot} size={0.19} kind={done ? 'blossom' : 'leaf'} color={tree.color} fresh={isFresh(task)}>
+                {done ? (
+                  isFresh(task) && (
+                    <span className="ember-rise">
+                      <EmberIcon size={16} /> +{FLAT_EMBERS}
+                    </span>
+                  )
+                ) : (
+                  <button
+                    type="button"
+                    className={`leaf-tag ${selected === task.id ? 'selected' : ''}`}
+                    onClick={() => setSelected(selected === task.id ? null : task.id)}
+                  >
+                    {task.title}
+                  </button>
+                )}
+              </TreeItem>
+            )
+          })}
+        </TreeSprite>
+        <img className="sprite piece" style={{ ...standing(art['taper-idle'], 130, 1150, 125), zIndex: 2000 }} src="art/taper-idle.webp" alt="" draggable={false} />
+      </div>
+
+      {overflow.length > 0 && (
+        <div className="overflow">
+          <p>
+            {overflow.length} more on this tree
+          </p>
+          {overflow.map((task) => (
+            <button key={task.id} type="button" className={`leaf-tag ${selected === task.id ? 'selected' : ''}`} onClick={() => setSelected(task.id)}>
+              {task.title}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {tasks.length === 0 && <p className="hint">Nothing on this tree yet. Tell the wizard what belongs here.</p>}
+
+      {chosen && (
+        <div className="sheet" role="dialog" aria-label={chosen.title}>
+          <p className="sheet-title">{chosen.title}</p>
+          <div className="sheet-actions">
+            <button
+              type="button"
+              className="pill solid"
+              onClick={() => {
+                onDone(chosen.id)
+                setSelected(null)
+              }}
+            >
+              Done
+            </button>
+            <button
+              type="button"
+              className="pill"
+              onClick={() => {
+                onDrop(chosen.id)
+                setSelected(null)
+              }}
+            >
+              Let it go
+            </button>
+            <button type="button" className="pill ghost" onClick={() => setSelected(null)}>
+              Not yet
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -59,16 +59,34 @@ Prodty is a productivity app for someone who cannot follow a schedule. You type 
 
 | Part | Choice |
 |---|---|
-| Language | TypeScript everywhere |
-| Interface | React, built with Vite |
-| Scenes and the Dark | A 2D canvas library (PixiJS) |
+| Language | TypeScript for the app, Python for the instinct network |
+| Interface | React, built with Vite, in `app/` |
+| Scenes | Cut-out images layered and animated with CSS. A canvas library comes in when the Dark needs it |
 | Text and buttons | Drawn by code, never baked into images |
-| Storage | On the phone first, with a backup to a small private server |
-| The wizard's mind | An AI model called from that server, so the key never sits on the phone |
-| When the AI is called | Only for typed messages and check-ins. Taps, parcels and the Dark run without it |
+| Storage | On the phone first, with a backup to a small private server later |
 | Phone app | The same web code wrapped with Capacitor |
 
-The AI model is chosen at the start of stage 1, with a real running-cost estimate.
+### Taper's mind
+
+Two parts, each doing what it is good at.
+
+**His voice and understanding: Claude Sonnet 5.5 (`claude-sonnet-5-5`) inside a shell.** The shell is our code around the model, and it is what keeps him Taper.
+
+- A fixed character bible written from the lore and voice rules, kept in the repo.
+- The app owns the facts. The model returns a line of speech plus proposed changes; the app's code decides embers, loot and rules.
+- Staged secrets: he is only told the parts of the story that have been unlocked.
+- Voice tests: sample situations re-run whenever anything changes.
+- A pinned model, moved to a newer one only on purpose.
+- Swappable: the app talks to the shell (`app/src/brain/`), never to a model directly.
+- The model is called from a small server so the key never sits on the phone, and only for typed messages and check-ins.
+
+**His instinct: a small PyTorch network trained and hosted by you.**
+
+- Predicts how long a task will really take you, how likely you are to dodge it, and which task you would do right now.
+- Starts by copying Claude's ratings, then corrects itself from your real behaviour.
+- Learns from the history the app has logged since stage 1.
+- Shown in the app as a "Taper's mind" screen.
+- Kept tiny and compared against a plain baseline, because one person's data is small.
 
 ## Build stages
 
@@ -88,6 +106,18 @@ Each stage ends with something usable on a phone browser.
 **Art needed:** the wizard in starting gear in a few poses, tree parts, leaf and blossom, forest ground, interface frames.
 
 **Done when:** you have used it for a week of real tasks and want to keep opening it. If it does not pull you back, fix that before building anything else.
+
+**Status:** the forest, tree view, speech box, input bar, blooming, embers, naming, planting, saving and music are built and run in a phone-sized browser. Taper is a rule-based stand-in until the API key arrives. Still to do in this stage: wire in Claude through a small server, and "done differently" and "changed" messages, which need the real model.
+
+### Stage 1.5: his instinct
+
+Begun before stage 2, as soon as stage 1 is wired to Claude.
+
+- The PyTorch network, its training script and a plain baseline to compare against.
+- Trained first on Claude's ratings, then on the logged history.
+- A way to run it for the app, and the "Taper's mind" screen.
+
+**Done when:** the network runs end to end on real logged history and its predictions are compared honestly against the baseline.
 
 ### Stage 2: his judgement
 
