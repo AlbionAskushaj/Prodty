@@ -1,22 +1,44 @@
 import art from '../data/art.json'
-import { doneCount, visibleTasks } from '../state/store'
+import { doneCount, lingeringCount, visibleTasks } from '../state/store'
 import type { AppState } from '../state/types'
+import { Flame, Sparks } from './Night'
 import { ANCHORS, SCENE, TASK_ANCHORS, TreeItem, TreeSprite, sceneBox, standing } from './TreeSprite'
 
-/** Where trees stand, by how many there are: [foot x, foot y, width] in scene units. */
-const SLOTS: Record<number, [number, number, number][]> = {
-  1: [[410, 820, 620]],
-  2: [[290, 815, 540], [700, 835, 520]],
-  3: [[210, 845, 500], [500, 775, 560], [800, 855, 480]],
-  4: [[185, 855, 440], [415, 775, 480], [650, 785, 470], [855, 875, 420]],
-  5: [[160, 860, 390], [350, 780, 415], [545, 750, 430], [725, 790, 415], [880, 880, 375]],
-  6: [[150, 870, 365], [310, 800, 380], [470, 755, 390], [630, 760, 390], [780, 810, 380], [900, 890, 355]],
+/**
+ * The camp: the last lit place. Taper sits by a small fire with the ember in his lantern,
+ * and the light it casts is the only colour in a world that has been dark a long time.
+ * Trees grow where that light reaches, and it reaches further with everything finished.
+ */
+
+/** Where the light is centred, in scene units. */
+export const LIGHT = { x: 520, y: 935 }
+
+/** How far the light reaches for a given number of embers: quick to grow at first, slower later. */
+export function lightReach(embers: number): { rx: number; ry: number } {
+  const rx = 470 + 22 * Math.sqrt(Math.max(embers, 0))
+  // A low pool on the ground while small; it opens into a full circle as it grows.
+  const ry = rx * (0.55 + 0.45 * Math.min((rx - 470) / 900, 1))
+  return { rx, ry }
 }
 
-/** A flat patch of shade on the grass, so things stand on the ground and do not float over it. */
-function Shade({ x, y, width }: { x: number; y: number; width: number }) {
-  return <div className="shade" style={sceneBox(x - width / 2, y - width * 0.11, width, 4.5)} />
+function isLit(x: number, y: number, embers: number): boolean {
+  const { rx, ry } = lightReach(embers)
+  return ((x - LIGHT.x) / rx) ** 2 + ((y - LIGHT.y) / ry) ** 2 <= 1.12
 }
+
+/** Where trees stand behind the camp, by how many there are: [foot x, foot y, width]. */
+const SLOTS: Record<number, [number, number, number][]> = {
+  1: [[540, 760, 430]],
+  2: [[300, 785, 390], [745, 775, 390]],
+  3: [[215, 805, 350], [520, 735, 390], [820, 795, 350]],
+  4: [[165, 825, 310], [390, 740, 340], [645, 735, 340], [860, 815, 310]],
+  5: [[130, 840, 280], [320, 760, 300], [520, 725, 320], [715, 755, 300], [890, 835, 280]],
+  6: [[115, 850, 265], [280, 775, 280], [445, 730, 295], [610, 730, 295], [770, 770, 280], [915, 845, 265]],
+}
+
+const SITTING = art['taper-sitting']
+const CAMPFIRE = art.campfire
+const CAMP = { taperX: 370, taperY: 1040, taperWidth: 600, fireX: 760, fireY: 1065, fireWidth: 215 }
 
 function isNew(iso: string): boolean {
   return Date.now() - Date.parse(iso) < 2500
@@ -25,16 +47,18 @@ function isNew(iso: string): boolean {
 interface ForestProps {
   state: AppState
   speaking: boolean
+  /** True when nothing has been finished for a few days: the flame burns low, but the light never shrinks. */
+  low: boolean
   onOpenTree: (treeId: string) => void
   onWake: () => void
 }
 
-export function Forest({ state, speaking, onOpenTree, onWake }: ForestProps) {
+export function Forest({ state, speaking, low, onOpenTree, onWake }: ForestProps) {
   const trees = state.trees.slice(0, 6)
   const slots = SLOTS[Math.max(trees.length, 1)]
   const asleep = state.phase === 'asleep'
-  const taper = speaking ? art['taper-talking'] : art['taper-idle']
-  const alone = trees.length <= 1
+  const { rx, ry } = lightReach(state.embers)
+  const eyes = asleep ? 0 : Math.min(lingeringCount(state), 5)
 
   const placed = trees.map((tree, i) => {
     const [footX, footY, baseWidth] = slots[i]
@@ -42,32 +66,34 @@ export function Forest({ state, speaking, onOpenTree, onWake }: ForestProps) {
     const open = tasks.filter((t) => t.status === 'open').length
     // A tree grows a little with everything finished on it.
     const width = baseWidth * (0.85 + 0.15 * Math.min(doneCount(state, tree.id) / 12, 1))
-    return { tree, footX, footY, width, tasks, open }
+    return { tree, footX, footY, width, tasks, open, lit: isLit(footX, footY, state.embers) }
   })
 
   return (
-    <div className="scene">
-      {trees.length === 0 && <Shade x={350} y={805} width={300} />}
-      {trees.length === 0 && <TreeSprite footX={350} footY={805} width={400} />}
-
-      {placed.map(({ tree, footX, footY, width }) => (
-        <Shade key={tree.id} x={footX} y={footY} width={width * 0.78} />
-      ))}
-      {!asleep && <Shade x={alone ? 745 : 610} y={alone ? 1030 : 1100} width={210} />}
-
-      {placed.map(({ tree, footX, footY, width, tasks, open }) => (
+    <div className={`scene camp ${speaking ? 'speaking' : ''} ${low ? 'low' : ''}`}>
+      {placed.map(({ tree, footX, footY, width, tasks, open, lit }) => (
         <TreeSprite
           key={tree.id}
-          className={isNew(tree.createdAt) ? 'sprout' : ''}
+          className={`${isNew(tree.createdAt) ? 'sprout' : ''} ${lit ? '' : 'unlit'}`}
           footX={footX}
           footY={footY}
           width={width}
           onClick={() => onOpenTree(tree.id)}
           label={`${tree.name} tree, ${open} open`}
         >
-          {ANCHORS.map((_, slot) => {
+          {ANCHORS.slice(0, 34).map((point, slot) => {
             const task = tasks[TASK_ANCHORS.indexOf(slot)]
-            return <TreeItem key={slot} anchor={slot} size={0.21} kind={task?.status === 'done' ? 'blossom' : 'leaf'} color={tree.color} />
+            return (
+              <TreeItem
+                key={slot}
+                anchor={slot}
+                size={0.22}
+                kind={task?.status === 'done' ? 'blossom' : 'leaf'}
+                color={tree.color}
+                // Leaves stir in order from one side to the other, like a breeze passing through.
+                delay={-(1 - point.x) * 2.4 - (slot % 3) * 0.3}
+              />
+            )
           })}
         </TreeSprite>
       ))}
@@ -78,7 +104,7 @@ export function Forest({ state, speaking, onOpenTree, onWake }: ForestProps) {
           key={tree.id}
           type="button"
           className="tree-tag"
-          style={{ left: `${(footX / SCENE.w) * 100}%`, top: `${((footY - width * 0.36) / SCENE.h) * 100}%` }}
+          style={{ left: `${(footX / SCENE.w) * 100}%`, top: `${((footY - width * 1.3) / SCENE.h) * 100}%` }}
           onClick={() => onOpenTree(tree.id)}
           tabIndex={-1}
           aria-hidden="true"
@@ -88,27 +114,51 @@ export function Forest({ state, speaking, onOpenTree, onWake }: ForestProps) {
         </button>
       ))}
 
+      {/* Things left a while wait at the edge of the light. */}
+      {Array.from({ length: eyes }, (_, i) => {
+        const angle = Math.PI * (0.92 + i * 0.29)
+        return (
+          <span
+            key={i}
+            className="eyes"
+            style={{
+              left: `${((LIGHT.x + Math.cos(angle) * (rx + 70)) / SCENE.w) * 100}%`,
+              top: `${((LIGHT.y + Math.sin(angle) * (ry + 55)) / SCENE.h) * 100}%`,
+              animationDelay: `${-i * 1.7}s`,
+            }}
+          />
+        )
+      })}
+
       {asleep ? (
         <button
           type="button"
           className="piece lantern"
-          style={{ ...standing(art['lantern-unlit'], 650, 995, 190), zIndex: 990 }}
+          style={{ ...standing(art['lantern-unlit'], 520, 1000, 190), zIndex: 990 }}
           onClick={onWake}
           aria-label="Pick up the lantern"
         >
           <img className="sprite" src="art/lantern-unlit.webp" alt="" draggable={false} />
         </button>
       ) : (
-        <div
-          className="piece taper"
-          style={{ ...standing(taper, alone ? 745 : 610, alone ? 1030 : 1100, speaking ? 285 : 235), zIndex: 1100 }}
-        >
-          <img className="sprite" src={speaking ? 'art/taper-talking.webp' : 'art/taper-idle.webp'} alt="The wizard" draggable={false} />
-        </div>
+        <>
+          <div className="piece campfire" style={{ ...standing(CAMPFIRE, CAMP.fireX, CAMP.fireY, CAMP.fireWidth), zIndex: CAMP.fireY }}>
+            <img className="sprite" src="art/campfire.webp" alt="" draggable={false} />
+            <Flame x={0.5} y={0.9} height={0.3} className="fire" />
+            <Sparks x={0.5} y={0.62} />
+            <span className="steam" />
+            <span className="steam late" />
+          </div>
+          <div className="piece taper sitting" style={{ ...standing(SITTING, CAMP.taperX, CAMP.taperY, CAMP.taperWidth), zIndex: CAMP.taperY }}>
+            <img className="sprite" src="art/taper-sitting.webp" alt="The wizard, sitting on a log with a cup of tea" draggable={false} />
+            <Flame x={0.432} y={0.262} height={0.17} className="ember" />
+            <Sparks x={0.432} y={0.1} count={4} />
+          </div>
+        </>
       )}
-
-      {/* A few loose leaves drifting across, so the forest is never perfectly still. */}
-      {!asleep && [0, 1].map((i) => <img key={i} className={`drift drift-${i}`} src="art/leaf-fallen.webp" alt="" draggable={false} />)}
     </div>
   )
 }
+
+/** Kept for layouts that still place things by scene box. */
+export { sceneBox }

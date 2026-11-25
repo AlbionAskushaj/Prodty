@@ -877,3 +877,505 @@ button.tree:active {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==================================================================================
+   The Long Dusk. The sun has not risen since the Great Flames went out, so the app is
+   always night. The only light is the ember in the wizard's lantern, and everything
+   below restyles the page around that: dark paper, cream boxes, one warm pool of colour.
+   ================================================================================== */
+
+@property --lrx {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --lry {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+:root {
+  --night: #12142b;
+  --moon: #f3e3bf;
+  --moon-soft: #a9a6b8;
+  --amber: #f2b441;
+  --dusk-sky: #e8a94a;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--night);
+}
+
+.app {
+  --lx: 50%;
+  --ly: 62%;
+  /* When the ember grows, the light takes a moment to reach out to its new edge. */
+  transition:
+    --lrx 1.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    --lry 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.backdrop {
+  background: var(--night);
+  animation: none;
+}
+
+/* The painted clearing is pinned to the camp by the app, so all three copies of it line up exactly. */
+.backdrop img {
+  position: absolute;
+  inset: auto;
+  left: var(--bx, 0);
+  top: var(--by, 0);
+  width: var(--bw, 100%);
+  height: auto;
+  max-width: none;
+  object-fit: fill;
+}
+
+.backdrop .glow,
+.backdrop .lit {
+  position: absolute;
+  inset: 0;
+  background: var(--dusk-sky);
+}
+
+.backdrop .lit {
+  clip-path: ellipse(var(--lrx) var(--lry) at var(--lx) var(--ly));
+  animation: light-flicker 4.3s ease-in-out infinite;
+}
+
+.backdrop .lit img,
+.backdrop .glow img {
+  filter: sepia(0.3) saturate(1.4) hue-rotate(-8deg) brightness(1.04);
+}
+
+.backdrop .glow {
+  clip-path: ellipse(calc(var(--lrx) * 1.1) calc(var(--lry) * 1.1) at var(--lx) var(--ly));
+  opacity: 0.3;
+  animation: glow-flicker 3.1s ease-in-out infinite;
+}
+
+.frame {
+  border-color: color-mix(in srgb, var(--moon) 55%, transparent);
+}
+
+.frame::before,
+.frame::after {
+  background: var(--amber);
+  border-color: var(--night);
+}
+
+/* ---- sky ---- */
+
+.stars {
+  position: absolute;
+  inset: 0 0 76% 0;
+}
+
+.in-tree .stars {
+  inset: 0;
+}
+
+.stars i {
+  position: absolute;
+  background: var(--amber);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  animation: twinkle ease-in-out infinite alternate;
+}
+
+.fireflies {
+  position: absolute;
+  inset: 0;
+}
+
+.fireflies i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f6dc76;
+  animation:
+    wander linear infinite alternate,
+    wink ease-in-out infinite;
+}
+
+/* ---- top bar and titles on dark paper ---- */
+
+.hud,
+.hud .icon-button,
+.tree-header,
+.tree-header .icon-button {
+  color: var(--moon);
+}
+
+.embers {
+  border-bottom-color: var(--amber);
+}
+
+.wordmark {
+  color: var(--moon-soft);
+}
+
+.rule::before,
+.rule::after {
+  background: var(--moon-soft);
+}
+
+.rule i {
+  background: var(--amber);
+  border-color: var(--night);
+}
+
+.hint,
+.overflow p {
+  color: var(--moon-soft);
+}
+
+.wake-hint {
+  color: var(--ink);
+}
+
+/* ---- the camp ---- */
+
+.tree.unlit {
+  filter: brightness(0.17) saturate(0.5);
+}
+
+.tree.unlit .leaf {
+  animation: none;
+}
+
+.taper.sitting .sprite {
+  animation: none;
+}
+
+.campfire,
+.taper.sitting {
+  pointer-events: none;
+}
+
+.flame {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  transform-origin: 50% 100%;
+  animation: flame-sway 2.9s ease-in-out infinite;
+  transition: scale 0.5s ease;
+}
+
+.flame img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  opacity: 0;
+  animation: flame-frame 0.78s steps(1, end) infinite;
+}
+
+.flame.fire {
+  animation-duration: 2.1s;
+}
+
+.camp.speaking .flame.ember {
+  scale: 1.2;
+}
+
+.camp.low .flame.ember {
+  scale: 0.66;
+}
+
+.sparks {
+  position: absolute;
+  z-index: 3;
+  width: 0;
+  height: 0;
+}
+
+.sparks i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.9cqw;
+  height: 0.9cqw;
+  background: var(--amber);
+  opacity: 0;
+  animation: spark linear infinite;
+}
+
+.steam {
+  position: absolute;
+  left: 63%;
+  top: 30%;
+  width: 6%;
+  aspect-ratio: 1 / 2.2;
+  border-left: 0.55cqw solid color-mix(in srgb, var(--moon) 75%, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: steam 3.6s ease-out infinite;
+}
+
+.steam.late {
+  left: 70%;
+  animation-delay: -1.8s;
+}
+
+.eyes {
+  position: absolute;
+  z-index: 1;
+  width: 4cqw;
+  height: 1.5cqw;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(ellipse at 22% 50%, #fff 0 22%, transparent 24%),
+    radial-gradient(ellipse at 78% 50%, #fff 0 22%, transparent 24%);
+  animation: blink 5.3s ease-in-out infinite;
+}
+
+.lantern .sprite {
+  filter: brightness(0.6) saturate(0.7);
+}
+
+.lantern::after {
+  content: '';
+  position: absolute;
+  left: 46%;
+  top: 62%;
+  width: 6%;
+  aspect-ratio: 1;
+  background: var(--amber);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  animation: twinkle 1.6s ease-in-out infinite alternate;
+}
+
+/* ---- a tree up close: he lifts the lantern into its branches ---- */
+
+.tree-view .scene::before {
+  content: '';
+  position: absolute;
+  inset: -1% -7% 1%;
+  border-radius: 48% 48% 44% 44% / 40% 40% 30% 30%;
+  background: var(--paper);
+  box-shadow: 0 0 0 1.4cqw color-mix(in srgb, var(--amber) 40%, var(--night));
+  animation: ring-flicker 3.1s ease-in-out infinite;
+}
+
+/* ---- boxes that sit over the dark ---- */
+
+.cut-1 {
+  padding: 1.5px;
+  background: var(--moon);
+}
+
+.cut-2 {
+  padding: 3.5px;
+  background: var(--ink);
+}
+
+.cut-3 {
+  padding: 5px;
+  background: var(--paper);
+}
+
+.cut-4 {
+  clip-path: none;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--paper);
+}
+
+.dialogue {
+  color: var(--ink);
+}
+
+.nameplate {
+  border: 1.5px solid var(--moon);
+}
+
+.choices .pill.solid {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.input-bar {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.sheet,
+.pill,
+.tree-tag,
+.leaf-tag {
+  color: var(--ink);
+}
+
+.pill.solid {
+  color: var(--paper);
+}
+
+.leaf-tag.selected {
+  color: var(--paper);
+}
+
+/* ---- motion ---- */
+
+@keyframes light-flicker {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  17% {
+    filter: brightness(0.965);
+  }
+  31% {
+    filter: brightness(1.04);
+  }
+  48% {
+    filter: brightness(0.985);
+  }
+  66% {
+    filter: brightness(1.05);
+  }
+  83% {
+    filter: brightness(0.97);
+  }
+}
+
+@keyframes glow-flicker {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  22% {
+    opacity: 0.2;
+  }
+  41% {
+    opacity: 0.36;
+  }
+  58% {
+    opacity: 0.24;
+  }
+  79% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes ring-flicker {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1.4cqw color-mix(in srgb, var(--amber) 40%, var(--night));
+  }
+  30% {
+    box-shadow: 0 0 0 1cqw color-mix(in srgb, var(--amber) 28%, var(--night));
+  }
+  62% {
+    box-shadow: 0 0 0 1.8cqw color-mix(in srgb, var(--amber) 46%, var(--night));
+  }
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.25;
+    transform: scale(0.7) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1) rotate(12deg);
+  }
+}
+
+@keyframes wander {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(18px, -14px);
+  }
+  50% {
+    transform: translate(-10px, -26px);
+  }
+  75% {
+    transform: translate(-22px, 8px);
+  }
+  100% {
+    transform: translate(12px, 20px);
+  }
+}
+
+@keyframes wink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  40%,
+  60% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes flame-frame {
+  0% {
+    opacity: 1;
+  }
+  33.4%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flame-sway {
+  0%,
+  100% {
+    transform: scale(1, 1) rotate(-1.5deg);
+  }
+  35% {
+    transform: scale(0.95, 1.08) rotate(2deg);
+  }
+  70% {
+    transform: scale(1.04, 0.95) rotate(-0.5deg);
+  }
+}
+
+@keyframes spark {
+  0% {
+    transform: translate(0, 0) rotate(45deg) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--drift) * 7cqw), -19cqw) rotate(45deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-230%) scale(1.25);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  91%,
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+  95% {
+    transform: translate(-50%, -50%) scaleY(0.05);
+  }
+}

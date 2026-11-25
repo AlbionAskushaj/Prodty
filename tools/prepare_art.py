@@ -101,6 +101,41 @@ def tree_points(im: Image.Image) -> dict:
     return {"anchors": anchors, "foot": {"x": round(trunk_x / w, 4), "y": 0.955}}
 
 
+def night_version(im: Image.Image) -> Image.Image:
+    """The same drawing as it looks with no light on it: dusty-blue outlines on dark indigo paper.
+
+    Made from the lit image itself, so the two line up exactly when light reveals one through the other.
+    """
+    arr = np.array(im).astype(float)
+    rgb, alpha = arr[..., :3], arr[..., 3]
+    drawn = alpha > 128
+    brightest = rgb.max(axis=2)
+    lines = drawn & (brightest < 95)
+    out = np.empty_like(rgb)
+    out[...] = (18, 20, 43)
+    # A whisper of each shape's tone, so the forest has depth even in the dark.
+    grey = rgb.mean(axis=2, keepdims=True) / 255.0
+    out += drawn[..., None] * grey * np.array([10.0, 13.0, 24.0])
+    out[lines] = (52, 66, 112)
+    return Image.fromarray(out.clip(0, 255).astype(np.uint8), "RGB")
+
+
+def slice_frames(im: Image.Image) -> list[tuple[Image.Image, float]]:
+    """Cut a row of animation frames apart, keeping one shared height so their bases stay level.
+
+    Returns each frame with the horizontal position of its base, as a share of its width.
+    """
+    alpha = np.array(im.getchannel("A")) > 0
+    (top, bottom), = runs(alpha.any(axis=1), min_gap=40)[:1]
+    frames = []
+    for left, right in runs(alpha[top:bottom].any(axis=0), min_gap=12):
+        frame = im.crop((left, top, right, bottom))
+        foot = np.array(frame.getchannel("A"))[-max(4, frame.height // 16):] > 0
+        base_x = float(np.nonzero(foot.any(axis=0))[0].mean()) / frame.width
+        frames.append((frame, round(base_x, 4)))
+    return frames
+
+
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(os.path.dirname(DATA), exist_ok=True)
@@ -115,7 +150,19 @@ def main() -> None:
             data[name] = save(crop_to_content(load_clean(source)), name, max_side)
 
     # The clearing fills the whole screen, so it keeps its empty sky and is not cropped.
-    data["clearing"] = save(load_clean("clearing-b.png"), "clearing", 1500)
+    clearing = load_clean("clearing-b.png")
+    data["clearing"] = save(clearing, "clearing", 1500)
+    night_version(clearing).save(os.path.join(OUT, "clearing-night.webp"), "WEBP", quality=86, method=6)
+
+    for source, name, max_side in [("taper-sitting.png", "taper-sitting", 1100), ("campfire.png", "campfire", 700)]:
+        data[name] = save(crop_to_content(load_clean(source)), name, max_side)
+
+    frames = slice_frames(load_clean("flames-sheet.png"))
+    if len(frames) != 3:
+        raise SystemExit(f"expected 3 flame frames, found {len(frames)}")
+    data["flames"] = []
+    for i, (frame, base_x) in enumerate(frames):
+        data["flames"].append({**save(frame, f"flame-{i}", 320), "baseX": base_x})
 
     tree = crop_to_content(load_clean("tree-bare.png"))
     data["tree-bare"] = {**save(tree, "tree-bare", 1000), **tree_points(tree)}
@@ -129,7 +176,7 @@ def main() -> None:
     with open(DATA, "w") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
-    print(json.dumps({k: (v["w"], v["h"]) for k, v in data.items()}))
+    print(f"prepared {len(data)} entries in {DATA}")
 
 
 if __name__ == "__main__":

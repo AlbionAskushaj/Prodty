@@ -1,4 +1,5 @@
 import type { AppState, Pending } from '../state/types'
+import { daysQuiet } from '../state/store'
 import { characterBible } from './bible'
 import type { Action, Brain, BrainReply } from './types'
 
@@ -75,7 +76,7 @@ function describe(state: AppState, ids: Map<string, string>): string {
     const short = [...ids].find(([, real]) => real === (state.pending as { taskId: string }).taskId)?.[0]
     waitingOn = { question: 'whether to let this task go', task: short }
   }
-  return JSON.stringify({ trees, waitingOn })
+  return JSON.stringify({ trees, waitingOn, daysSinceAnythingWasFinished: daysQuiet() })
 }
 
 /** Check everything the model proposed against the real forest before any of it is applied. */

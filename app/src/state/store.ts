@@ -118,3 +118,30 @@ export function applyActions(state: AppState, actions: Action[]): Applied {
 
   return { state: { ...state, trees, tasks, embers: state.embers + embersGained }, embersGained }
 }
+
+function readLog(): LogEvent[] {
+  try {
+    return JSON.parse(localStorage.getItem(LOG_KEY) ?? '[]') as LogEvent[]
+  } catch {
+    return []
+  }
+}
+
+/** How many different days anything was finished. It only ever goes up, and each one is a star. */
+export function daysLit(): number {
+  const days = new Set(readLog().filter((e) => e.type === 'task_done').map((e) => new Date(e.at).toDateString()))
+  return days.size
+}
+
+/** Whole days since the ember was last fed, or since the wizard was woken if nothing is finished yet. */
+export function daysQuiet(): number {
+  const log = readLog().filter((e) => e.type === 'task_done' || e.type === 'wizard_woken')
+  const last = log[log.length - 1]
+  return last ? Math.floor((Date.now() - Date.parse(last.at)) / 86_400_000) : 0
+}
+
+/** Open tasks that have sat for two days or more. Each one is a pair of eyes at the edge of the light. */
+export function lingeringCount(state: AppState): number {
+  const cutoff = Date.now() - 2 * 86_400_000
+  return state.tasks.filter((t) => t.status === 'open' && Date.parse(t.createdAt) < cutoff).length
+}

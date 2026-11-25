@@ -107,7 +107,7 @@ Each stage ends with something usable on a phone browser.
 
 **Done when:** you have used it for a week of real tasks and want to keep opening it. If it does not pull you back, fix that before building anything else.
 
-**Status:** the forest, tree view, speech box, input bar, blooming, embers, naming, planting, saving and music are built and run in a phone-sized browser. Taper is a rule-based stand-in until the API key arrives. Still to do in this stage: wire in Claude through a small server, and "done differently" and "changed" messages, which need the real model.
+**Status:** built and running as a hosted preview. The home screen is the night camp from `design.md`, with a light that grows with embers, an animated flame, sparks, steam, fireflies and stars. In the preview Taper is Claude Sonnet 5.5 called from the page, behind the character bible and the shell's checks; elsewhere he falls back to a rule-based stand-in. Still to do in this stage: the small server that calls Claude with your own key, and proper saving beyond the browser.
 
 ### Stage 1.5: his instinct
 

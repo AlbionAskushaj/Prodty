@@ -86,11 +86,13 @@ interface TreeItemProps {
   /** Keep the size exact; otherwise leaves vary a little so the crown looks natural. */
   exact?: boolean
   fresh?: boolean
+  /** When this leaf's sway begins, in seconds. Lets a breeze pass through the crown in order. */
+  delay?: number
   children?: ReactNode
 }
 
 /** A leaf or blossom fixed to one of the tree's anchor points. */
-export function TreeItem({ anchor, size, kind, color, exact, fresh, children }: TreeItemProps) {
+export function TreeItem({ anchor, size, kind, color, exact, fresh, delay, children }: TreeItemProps) {
   const point = ANCHORS[anchor % ANCHORS.length]
   const turn = ((anchor * 47) % 80) - 40
   const scale = exact ? 1 : 0.78 + ((anchor * 37) % 50) / 100
@@ -102,7 +104,7 @@ export function TreeItem({ anchor, size, kind, color, exact, fresh, children }: 
     >
       <img
         className={`sprite ${kind === 'blossom' ? 'blossom' : `leaf leaf-${color}`} ${fresh ? 'fresh' : ''}`}
-        style={{ rotate: `${kind === 'blossom' ? turn / 4 : turn}deg`, animationDelay: `${-(anchor % 7)}s` }}
+        style={{ rotate: `${kind === 'blossom' ? turn / 4 : turn}deg`, animationDelay: `${delay ?? -(anchor % 7)}s` }}
         src={kind === 'blossom' ? 'art/blossom.webp' : LEAF_IMAGE[color]}
         alt=""
         draggable={false}

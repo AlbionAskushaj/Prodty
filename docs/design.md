@@ -8,6 +8,31 @@ Prodty is the name of the app and of the world the wizard lives in.
 
 A productivity app for someone who cannot follow a schedule. A wizard companion sorts your thoughts into a forest, and real tasks earn loot for him. Built for one person first.
 
+## The question every screen must answer
+
+What is this place in the story, and what does it show about you? A screen that cannot answer both is not finished.
+
+## The Long Dusk
+
+The sun has not risen in Prodty since the Great Flames went out, so the app is always dusk or night. The only real light on any screen is the ember in the wizard's lantern.
+
+The home screen is his camp at the edge of the world: the last lit place. He sits by a small fire with a cup of tea.
+
+| On screen | In the story | What it shows about you |
+|---|---|---|
+| The pool of light | How strong the ember is | Progress: it widens as embers are earned, and colour returns to what it reaches. It never shrinks |
+| Trees inside the light | They only grow where the ember shines | The areas of your life. A tree planted beyond the light stays dark until the light reaches it |
+| Eyes at the edge | Shades, made of dread | Things left sitting; one pair each, gone when the thing is done or let go |
+| Stars | The sky slowly coming back | One handful to start, more for every day anything was finished. They never go out |
+| A distant lit tower | A relit beacon | Each keeper freed |
+| The second cup on the log | Wick's, never touched | Nothing. It is there to be noticed long before it is explained |
+| People and tents | Others drawn back to the light | Arrive as the light grows |
+| The first sunrise | The Long Dusk ending | Reaching Lighthouse rank |
+
+- If nothing has been finished for a few days, his flame burns low and he may say once, gently, that the ember has not been fed in a while.
+- The opening is total darkness with a faint shape in the grass. Tapping it lights the flame, and the light blooms outward: the first colour seen in the app.
+- A tree up close is him lifting his lantern into its branches.
+
 ## The core rule
 
 You never maintain it.
