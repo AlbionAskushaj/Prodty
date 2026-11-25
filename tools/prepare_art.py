@@ -18,6 +18,7 @@ OUT = "app/public/art"
 DATA = "app/src/data/art.json"
 
 LEAF_NAMES = ["leaf-rust", "leaf-moss", "leaf-gold", "leaf-fallen", "blossom", "bud"]
+TRAVELLER_NAMES = ["tent-cream", "tent-rust", "stall", "travellers", "bunting", "cart"]
 TREE_ANCHOR_COUNT = 44
 
 
@@ -154,8 +155,20 @@ def main() -> None:
     data["clearing"] = save(clearing, "clearing", 1500)
     night_version(clearing).save(os.path.join(OUT, "clearing-night.webp"), "WEBP", quality=86, method=6)
 
-    for source, name, max_side in [("taper-sitting.png", "taper-sitting", 1100), ("campfire.png", "campfire", 700)]:
-        data[name] = save(crop_to_content(load_clean(source)), name, max_side)
+    data["campfire"] = save(crop_to_content(load_clean("campfire.png")), "campfire", 700)
+
+    # The wizard's seated poses are swapped in place, so all of them are cut to the first one's box.
+    resting = load_clean("taper-sitting.png")
+    left, top, right, bottom = resting.getchannel("A").getbbox()
+    box = (max(left - 4, 0), max(top - 4, 0), min(right + 4, resting.width), min(bottom + 4, resting.height))
+    for source, name in [("taper-sitting.png", "taper-sitting"), ("taper-sipping.png", "taper-sipping"), ("taper-speaking.png", "taper-speaking")]:
+        data[name] = save(load_clean(source).crop(box), name, 1100)
+
+    travellers = slice_sheet(load_clean("travellers-sheet.png"))
+    if len(travellers) != len(TRAVELLER_NAMES):
+        raise SystemExit(f"expected {len(TRAVELLER_NAMES)} items on the travellers sheet, found {len(travellers)}")
+    for piece, name in zip(travellers, TRAVELLER_NAMES):
+        data[name] = save(piece, name, 380)
 
     frames = slice_frames(load_clean("flames-sheet.png"))
     if len(frames) != 3:

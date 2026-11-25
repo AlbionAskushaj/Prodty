@@ -48,6 +48,7 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
               return (
                 <TreeItem
                   key={task.id}
+                  taskId={task.id}
                   anchor={slot}
                   size={0.2}
                   exact
@@ -76,6 +77,8 @@ export function TreeView({ tree, tasks, onBack, onDone, onDrop }: TreeViewProps)
           </TreeSprite>
           <div className="piece taper" style={{ ...standing(art['taper-idle'], 140, 1168, 200), zIndex: 2000 }}>
             <img className="sprite" src="art/taper-idle.webp" alt="" draggable={false} />
+            {/* Where a flying ember lands: the flame in his lantern. */}
+            <span className="lantern-target" style={{ left: '60%', top: '17%' }} />
           </div>
         </div>
       </div>

@@ -15,13 +15,45 @@
     "w": 752,
     "h": 1344
   },
+  "campfire": {
+    "w": 525,
+    "h": 700
+  },
   "taper-sitting": {
     "w": 1100,
     "h": 867
   },
-  "campfire": {
-    "w": 525,
-    "h": 700
+  "taper-sipping": {
+    "w": 1100,
+    "h": 867
+  },
+  "taper-speaking": {
+    "w": 1100,
+    "h": 867
+  },
+  "tent-cream": {
+    "w": 289,
+    "h": 239
+  },
+  "tent-rust": {
+    "w": 312,
+    "h": 252
+  },
+  "stall": {
+    "w": 294,
+    "h": 261
+  },
+  "travellers": {
+    "w": 282,
+    "h": 277
+  },
+  "bunting": {
+    "w": 294,
+    "h": 279
+  },
+  "cart": {
+    "w": 307,
+    "h": 271
   },
   "flames": [
     {

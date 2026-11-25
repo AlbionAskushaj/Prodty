@@ -60,6 +60,10 @@ Tested and working. Adding `background: "transparent"` and `output_format: "png"
 
 The prompt asked for slow plucked notes on a zither-like string instrument, a low breathy wooden flute that enters rarely, a very soft warm drone, lots of silence, no drums, percussion, vocals or synth pads, and an ending as quiet as the beginning so it can loop.
 
+## Night sounds
+
+The campfire and cricket loops in `assets/audio/` are recordings from the Epidemic Sound catalogue, fetched through Higgsfield's sound-effect search and then levelled and trimmed. Their licence covers use in content; whether it covers shipping them inside a published app has not been checked and must be before any release.
+
 ## What the images are
 
 Everything in `art/` is concept art. The app needs separate pieces that code assembles:

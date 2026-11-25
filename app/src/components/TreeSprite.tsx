@@ -88,11 +88,13 @@ interface TreeItemProps {
   fresh?: boolean
   /** When this leaf's sway begins, in seconds. Lets a breeze pass through the crown in order. */
   delay?: number
+  /** The task this leaf stands for, so an ember can find it when the task is finished. */
+  taskId?: string
   children?: ReactNode
 }
 
 /** A leaf or blossom fixed to one of the tree's anchor points. */
-export function TreeItem({ anchor, size, kind, color, exact, fresh, delay, children }: TreeItemProps) {
+export function TreeItem({ anchor, size, kind, color, exact, fresh, delay, taskId, children }: TreeItemProps) {
   const point = ANCHORS[anchor % ANCHORS.length]
   const turn = ((anchor * 47) % 80) - 40
   const scale = exact ? 1 : 0.78 + ((anchor * 37) % 50) / 100
@@ -100,6 +102,7 @@ export function TreeItem({ anchor, size, kind, color, exact, fresh, delay, child
   return (
     <div
       className={`tree-item ${edge} ${children ? 'tagged' : ''}`}
+      data-task={taskId}
       style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%`, width: `${size * scale * 100}%` }}
     >
       <img

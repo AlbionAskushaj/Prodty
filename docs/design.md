@@ -29,6 +29,12 @@ The home screen is his camp at the edge of the world: the last lit place. He sit
 | People and tents | Others drawn back to the light | Arrive as the light grows |
 | The first sunrise | The Long Dusk ending | Reaching Lighthouse rank |
 
+- Finishing a task sends an ember from its blossom to his lantern. The count rises and the light reaches further only when it lands.
+- He rests with his tea, takes a sip every so often, and turns to speak when he has something to say.
+- Every day anything is finished adds one bright star, joined to the last. Seven make a constellation: the Lantern, the Key, the Kettle, the Leaf, the Cup. The next stars still to earn show as faint points.
+- Travellers arrive at the far edge of the clearing as embers pass 40, 100, 200, 350, 550 and 800: a tent, two walkers, a second tent, bunting and lanterns, a stall, a cart and a dog. He remarks on each arrival.
+- A beacon tower stands dark beyond the trees. It lights when its keeper is freed, later in the story.
+- Under the music run two quiet loops: the campfire and crickets.
 - If nothing has been finished for a few days, his flame burns low and he may say once, gently, that the ember has not been fed in a while.
 - The opening is total darkness with a faint shape in the grass. Tapping it lights the flame, and the light blooms outward: the first colour seen in the app.
 - A tree up close is him lifting his lantern into its branches.
