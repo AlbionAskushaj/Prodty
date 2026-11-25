@@ -23,6 +23,12 @@ Wick reached into the dying last Great Flame to take it for himself. The general
 
 The general put the ember in his own lantern and vanished. The histories say he killed the Flame. The Flames went out, and the Dark came.
 
+## The Long Dusk
+
+When the Great Flames went out, the sun stopped rising. Prodty has been in dusk and night ever since, and that is the Long Dusk. The only true light left anywhere is the ember in the general's lantern.
+
+Colour belongs to the light. Whatever it reaches is whole and bright; everything beyond it is dark shapes and faint outlines.
+
 ## The Dark
 
 - The Dark is where the people of Prodty wake when their light goes out. They wake as shades: drifting, hollow, without memory.
@@ -44,9 +50,24 @@ As ruler of the Dark he has no name. The wizard only ever calls him "him". The n
 
 A wanderer who brews tea at the edge of the world and keeps one ember alive. He learned that a Great Flame never fed on tribute or fear. It feeds on things honestly finished.
 
+His camp is the last lit place: a fallen log, a small fire, a kettle, and the pool of light his lantern casts. Trees grow only where that light reaches.
+
+On the log beside him sits a second cup of tea, poured and never touched. It is Wick's. He sets it out every night and never mentions it. It is on screen from the first day, long before the story explains it.
+
+His manner now is the opposite of the general's: warm and easygoing on the surface, sharp underneath. He offers and never orders, forgives at once, and keeps no score.
+
 ## You
 
 The first student he has taken since Wick. That is why he never pushes or guilts you: he has seen what pushing costs. Every task you finish feeds the ember, and one day it becomes a Great Flame again.
+
+As the ember grows, its light reaches further and the world answers:
+
+- The pool of light widens, and it never shrinks. If nothing is finished for a while his flame burns low, but the ground already won stays lit.
+- Stars return to the sky, one for every day anything is finished, and join into constellations.
+- Travellers who have been wandering in the dark see the light and pitch their tents at its edge.
+- Things left undone gather as eyes at the edge of the light. They are shades in the making, and they leave when the thing is done or let go.
+
+His rank follows the ember: Spark, Candle, Lantern, Beacon, Lighthouse.
 
 ## Two philosophies
 
@@ -56,7 +77,7 @@ Wick stands for getting things done by force, fear and obsession. The wizard sta
 
 The twelve sets were the general's company.
 
-- Six survived as hermits and send gear your way: the Archivist, Stargazer, Tinker, Hearthkeeper, Trailwalker and Courier.
+- Six survived as hermits and send gear your way: the Archivist, Stargazer, Tinker, Hearthkeeper, Trailwalker and Courier. Each has a home that one of your trees grows into: the Reading Room, Observatory Hill, the Signal Works, the Cottage Garden, the High Trail and Post Square.
 - Five are lost in the Dark as keepers: the Harvestman, Stormglass, Deepwater, Night Moth and the Wisp.
 - The Watcher set is the general's own war regalia. Wearing all of it brings his old voice back. Wick models himself on it: he became the man his master used to be.
 
@@ -87,6 +108,7 @@ The six hermits who survived do not agree about Taper. Some forgave him and some
 You beat Wick and release him, and he finally finds peace. The app does not end there.
 
 - The ember becomes a Great Flame, which is the Lighthouse rank.
+- The sun rises for the first time since the Flames went out. The Long Dusk ends, and the camp finally sees daylight.
 - Wick's Lantern becomes the final Mythic: the only lantern that casts a beam of shadow.
 - The Dark stays open with harder depths, as a place to explore and no longer a threat.
 
@@ -97,9 +119,18 @@ His true name is **Taper**: the thin candle used to light other candles, which p
 - He has two names. The world knows his war title, the Dawnbringer, and Wick sneers it at him. Taper is the humble name only Wick ever used.
 - You name him in the first five minutes and he takes the name warmly.
 - He hints it is not his: a half-second pause before he answers to it, a scratched-out inscription on old gear, a keeper who starts to address him and is cut off.
+- Wick taunts you with it before you know it: "Has he told you his name? No. He wouldn't."
 - The reveal comes after Wick is defeated. As he is released, Wick's last word is "Taper", said with love for the first time since the siege. The wizard answers "Wick", a name he has never said aloud until then.
 - Afterward he offers you the name, and admits he prefers the one you gave him.
 
 ## How it is told
 
 Letters between master and apprentice found in the Dark, a keeper's last words, and a rare line from the wizard as he ranks up. He tells you the kind version first. The truth comes later.
+
+Each of the six hermits tells it differently, so the truth has to be pieced together from people who disagree.
+
+The model that speaks for him is never given any of this ahead of time. It is told only the parts already unlocked, so he cannot give the story away early.
+
+## What was set aside
+
+An earlier version of the lore was rejected and should not be brought back: a world that fell because its people put things off ("the Long Later"), and a world name with six letters missing.
